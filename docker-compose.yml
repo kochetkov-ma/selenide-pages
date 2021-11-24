@@ -1,0 +1,8 @@
+version: '3.8'
+
+services:
+  sample:
+    image: docker/getting-started:latest
+    container_name: get-started
+    ports:
+      - "80:80"

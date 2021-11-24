@@ -1,0 +1,6 @@
+dependencies {
+    implementation libs.geantyref
+    implementation libs.selenide.core
+
+    testImplementation libs.selenide
+}

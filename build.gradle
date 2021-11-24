@@ -1,0 +1,53 @@
+//file:noinspection GroovyAssignabilityCheck
+//file:noinspection GrUnresolvedAccess
+
+plugins {
+    id 'idea'
+    alias(libs.plugins.kotlin) apply false
+}
+
+wrapper { distributionType = Wrapper.DistributionType.ALL; gradleVersion = gradleWrapperVersion }
+
+allprojects {
+    apply plugin: 'kotlin'
+
+    repositories { mavenLocal(); mavenCentral() }
+
+    java {
+        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_11
+    }
+
+    tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
+        kotlinOptions {
+            freeCompilerArgs = ['-Xjsr305=strict']
+            suppressWarnings = true
+            jvmTarget = JavaVersion.VERSION_11.majorVersion
+        }
+    }
+
+    tasks.withType(Test) {
+        useJUnitPlatform()
+        systemProperties["kotest.listener.spring.ignore.warning"] = true
+        systemProperties["gradle.build.dir"] = buildDir
+    }
+
+    dependencies {
+        // MAIN //
+        implementation 'org.jetbrains.kotlin:kotlin-reflect'
+        implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
+        implementation(libs.allure) {
+            ['selenium-edge-driver', 'selenium-ie-driver', 'selenium-opera-driver', 'selenium-safari-driver', 'okhttp']
+                .forEach { exclude module: it }
+        }
+        implementation libs.awaitility
+        implementation libs.awaitility.kotlin
+
+        // TEST //
+        implementation libs.kotest.assertions
+        testImplementation libs.mockk
+        testImplementation libs.kotest.runner
+        testImplementation libs.kotest.containers
+        testImplementation(platform(libs.testcontainers))
+    }
+}
