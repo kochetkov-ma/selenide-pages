@@ -7,6 +7,7 @@ dependencyResolutionManagement {
         libs {
             // PLUGIN //
             alias('kotlin').toPluginId('org.jetbrains.kotlin.jvm').version('1.6.0')
+            alias('allure-gradle').toPluginId('io.qameta.allure').version('2.8.1')
 
             // MAIN //
             version('awaitility', '4.1.1')
@@ -16,9 +17,16 @@ dependencyResolutionManagement {
             version('selenide', '6.0.3')
             alias('selenide').to('com.codeborne', 'selenide').versionRef('selenide')
             alias('selenide-core').to('com.codeborne', 'selenide-core').versionRef('selenide')
-            
-            alias('allure').to('io.qameta.allure', 'allure-selenide').version('2.16.1')
+
+            version('allure', '2.16.1')
+            alias('allure').to('io.qameta.allure', 'allure-selenide').versionRef('allure')
+            alias('allure-api').to('io.qameta.allure', 'allure-java-commons').versionRef('allure')
+
             alias('geantyref').to('io.leangen.geantyref', 'geantyref').version('1.3.13')
+
+            alias('slf4j').to('org.slf4j', 'slf4j-api').version('1.7.32')
+            alias('logback').to('ch.qos.logback', 'logback-classic').version('1.2.7')
+            alias('kotlin-logging').to('io.github.microutils', 'kotlin-logging-jvm').version('2.0.10')
 
             // TEST //
             alias('testcontainers').to('org.testcontainers', 'testcontainers-bom').version('1.16.2')
@@ -27,6 +35,7 @@ dependencyResolutionManagement {
             alias('kotest-runner').to('io.kotest', 'kotest-runner-junit5').versionRef('kotest')
             alias('kotest-assertions').to('io.kotest', 'kotest-assertions-core').versionRef('kotest')
             alias('kotest-containers').to('io.kotest.extensions', 'kotest-extensions-testcontainers').version('1.0.1')
+            alias('kotest-allure').to('ru.iopump.kotest', 'kotest-allure').version('1.2.0')
         }
     }
 }

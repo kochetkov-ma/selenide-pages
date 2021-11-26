@@ -1,4 +1,4 @@
-package online.jeteam.qa.pom.page.full
+package online.jeteam.qa.pom.page.collection
 
 import com.codeborne.selenide.Condition
 import com.codeborne.selenide.ElementsCollection

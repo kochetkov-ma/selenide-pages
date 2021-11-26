@@ -1,4 +1,4 @@
-package online.jeteam.qa.pom.page.part
+package online.jeteam.qa.pom.page.block
 
 import com.codeborne.selenide.SelenideElement
 import online.jeteam.qa.pom.annotation.Page
@@ -19,7 +19,9 @@ class PartialDockerTutorialPage : BasePage<PartialDockerTutorialPage>() {
     )
     lateinit var dockerLogo: SelenideElement
 
-    lateinit var contentBlock: ContentBlock
+    lateinit var infoTitleBlock: InfoBlock<TitleBlock>
+
+    lateinit var infoCodeBlock: InfoBlock<CodeBlock>
 }
 
 @Element(
@@ -36,3 +38,28 @@ class ContentBlock : Block() {
     )
     lateinit var header: SelenideElement
 }
+
+@Element(
+    value = "Information with title",
+    required = false,
+    css = ".admonition.info"
+)
+class InfoBlock<T : Block> : Block() {
+
+    @Element(xpath = ".")
+    lateinit var item: T
+}
+
+@Element(
+    value = "Title",
+    required = false,
+    className = "admonition-title"
+)
+class TitleBlock : Block()
+
+@Element(
+    value = "Code",
+    required = false,
+    className = "highlight"
+)
+class CodeBlock : Block()

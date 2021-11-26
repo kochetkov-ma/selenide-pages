@@ -39,70 +39,72 @@ public @interface Element {
     /**
      * Copy from FindBy. Work the same way.
      *
-     * @see org.openqa.selenium.support.FindBy
+     * @see org.openqa.selenium.support.FindBy#how()
      */
     How how() default How.UNSET;
 
     /**
      * Copy from FindBy. Work the same way.
      *
-     * @see org.openqa.selenium.support.FindBy
+     * @see org.openqa.selenium.support.FindBy#using()
      */
     String using() default UNSET_LOCATOR;
 
     /**
      * Copy from FindBy. Work the same way.
      *
-     * @see org.openqa.selenium.support.FindBy
+     * @see org.openqa.selenium.support.FindBy#id()
      */
     String id() default UNSET_LOCATOR;
 
     /**
-     * Copy from FindBy. Work the same way.
+     * <p><b>It is selector, not element Alias. See value() method</b>
      *
-     * @see org.openqa.selenium.support.FindBy
+     * <p>Copy from FindBy. Work the same way.
+     *
+     * @see org.openqa.selenium.support.FindBy#name()
      */
     String name() default UNSET_LOCATOR;
 
     /**
      * Copy from FindBy. Work the same way.
      *
-     * @see org.openqa.selenium.support.FindBy
+     * @see org.openqa.selenium.support.FindBy#className()
      */
     String className() default UNSET_LOCATOR;
 
     /**
      * Copy from FindBy. Work the same way.
      *
-     * @see org.openqa.selenium.support.FindBy
+     * @see org.openqa.selenium.support.FindBy#css()
      */
     String css() default UNSET_LOCATOR;
 
     /**
      * Copy from FindBy. Work the same way.
      *
-     * @see org.openqa.selenium.support.FindBy
+     * @see org.openqa.selenium.support.FindBy#tagName()
      */
     String tagName() default UNSET_LOCATOR;
 
     /**
      * Copy from FindBy. Work the same way.
      *
-     * @see org.openqa.selenium.support.FindBy
+     * @see org.openqa.selenium.support.FindBy#linkText()
      */
     String linkText() default UNSET_LOCATOR;
 
     /**
      * Copy from FindBy. Work the same way.
      *
-     * @see org.openqa.selenium.support.FindBy
+     * @see org.openqa.selenium.support.FindBy#partialLinkText()
      */
     String partialLinkText() default UNSET_LOCATOR;
 
     /**
      * Copy from FindBy. Work the same way.
      *
-     * @see org.openqa.selenium.support.FindBy
+     * @see org.openqa.selenium.support.FindBy#xpath()
      */
     String xpath() default UNSET_LOCATOR;
 

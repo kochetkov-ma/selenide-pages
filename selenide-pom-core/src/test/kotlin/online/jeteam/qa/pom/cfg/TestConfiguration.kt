@@ -1,7 +1,6 @@
 package online.jeteam.qa.pom.cfg
 
 import com.codeborne.selenide.Configuration
-import com.codeborne.selenide.impl.ThreadLocalSelenideDriver
 import io.kotest.core.config.AbstractProjectConfig
 import online.jeteam.qa.pom.page.Pages
 import org.testcontainers.containers.GenericContainer
@@ -17,7 +16,7 @@ object TestConfiguration : AbstractProjectConfig() {
 
     override fun beforeAll() {
         Configuration.baseUrl = "http://" + if (container.isRunning) container.host + ":" + container.firstMappedPort else "localhost"
-        pages = Pages(ThreadLocalSelenideDriver())
+        pages = Pages.createWithStaticSelenideDriver()
         super.beforeAll()
     }
 }

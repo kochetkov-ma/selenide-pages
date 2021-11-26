@@ -29,6 +29,9 @@ internal object InternalExtension {
     val Number.sec: Duration get() = Duration.ofSeconds(this as Long)
     val Number.mills: Duration get() = Duration.ofMillis(this as Long)
 
-    inline fun <reified T : Annotation> KProperty<*>.annotation(): T? =
-        this.javaField?.getAnnotation(T::class.java) ?: findAnnotation()
+    inline fun <reified T : Annotation> KProperty<*>.annotation(): T? = javaField?.getAnnotation(T::class.java) ?: findAnnotation()
+
+    inline fun <reified T> Array<T?>?.plusNotNull(element: T?): List<T> = (this ?: emptyArray()).let { list ->
+        if (element != null) list.plus(element) else list
+    }.mapNotNull { it }
 }

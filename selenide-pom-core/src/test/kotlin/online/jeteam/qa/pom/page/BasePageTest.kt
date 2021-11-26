@@ -13,13 +13,13 @@ import org.junit.jupiter.api.assertThrows
 class BasePageTest : StringSpec() {
 
     private val driver = mockk<SelenideDriver>(relaxed = true)
-    private val pages = Pages(driver, "test")
+    private val pages = Pages.createWithSelenideDriver(driver, "test")
 
     init {
         afterSpec { unmockkAll() }
 
         "на странице при открытии должны замениться плейсхолдеры в path" {
-            val page = pages.initPage(PathBasePage())
+            val page = pages.initPage(PathPage())
             page.open()
 
             verify { driver.open("test/{id}/test/next/{id}/next/{uuid}") }
@@ -32,7 +32,7 @@ class BasePageTest : StringSpec() {
         }
 
         "на странице при создании должны замениться плейсхолдеры в path и всегда открываться уже с заменами" {
-            val page = pages.initPage(PathBasePage(), "id" to "1", "uuid" to "a1", "not_exists" to "foo")
+            val page = pages.initPage(PathPage(), "id" to "1", "uuid" to "a1", "not_exists" to "foo")
             page.open()
             verify { driver.open("test/1/test/next/1/next/a1") }
 
@@ -41,11 +41,11 @@ class BasePageTest : StringSpec() {
         }
 
         "на странице при создании должны замениться плейсхолдеры в path и проверка текущего url должна быть с заменами" {
-            var page = pages.initPage(PathBasePage(), "id" to "1")
+            var page = pages.initPage(PathPage(), "id" to "1")
             every { driver.url() } returns "someBaseUrl/1/test/next/1/next/ANY_VALUE/###"
             page.verifyOpen(timeoutMs = 200)
 
-            page = pages.initPage(PathBasePage(), "uuid" to "10")
+            page = pages.initPage(PathPage(), "uuid" to "10")
             every { driver.url() } returns "someBaseUrl/ANY_VALUE/test/next/ANY_VALUE/next/10/###"
             page.verifyOpen(timeoutMs = 200)
 
@@ -57,5 +57,5 @@ class BasePageTest : StringSpec() {
     }
 
     @Page("Замены в path", path = "/{id}/test/next/{id}/next/{uuid}")
-    class PathBasePage : BasePage<PathBasePage>()
+    class PathPage : BasePage<PathPage>()
 }

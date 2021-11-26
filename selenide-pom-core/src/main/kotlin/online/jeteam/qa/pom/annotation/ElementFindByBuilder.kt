@@ -15,7 +15,7 @@ import kotlin.reflect.full.declaredMemberFunctions
 
 internal class ElementFindByBuilder : AbstractFindByBuilder() {
 
-    override fun buildIt(annotation: Any, field: Field): By {
+    override fun buildIt(annotation: Any, field: Field?): By {
         require(annotation is Element) { "Something went wrong with @Element, it turned out as '$annotation' in '$field'" }
 
         val findBys = annotation.findBys

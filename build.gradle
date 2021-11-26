@@ -4,12 +4,14 @@
 plugins {
     id 'idea'
     alias(libs.plugins.kotlin) apply false
+    alias(libs.plugins.allure.gradle) apply false
 }
 
 wrapper { distributionType = Wrapper.DistributionType.ALL; gradleVersion = gradleWrapperVersion }
 
 allprojects {
     apply plugin: 'kotlin'
+    apply plugin: 'io.qameta.allure'
 
     repositories { mavenLocal(); mavenCentral() }
 
@@ -34,20 +36,30 @@ allprojects {
 
     dependencies {
         // MAIN //
-        implementation 'org.jetbrains.kotlin:kotlin-reflect'
-        implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
-        implementation(libs.allure) {
-            ['selenium-edge-driver', 'selenium-ie-driver', 'selenium-opera-driver', 'selenium-safari-driver', 'okhttp']
-                .forEach { exclude module: it }
-        }
-        implementation libs.awaitility
-        implementation libs.awaitility.kotlin
+        api 'org.jetbrains.kotlin:kotlin-reflect'
+        api 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
+        api libs.awaitility
+        api(libs.awaitility.kotlin) { transitive = false }
+        api libs.kotest.assertions
 
+        /* Logging API*/
+        api libs.slf4j
+        api libs.kotlin.logging
+        /* Logging IMPL*/
+        runtimeOnly libs.logback
+        
         // TEST //
-        implementation libs.kotest.assertions
+        testImplementation libs.kotest.allure
         testImplementation libs.mockk
         testImplementation libs.kotest.runner
         testImplementation libs.kotest.containers
         testImplementation(platform(libs.testcontainers))
+    }
+
+    allure {
+        version = libs.versions.allure.get()
+        autoconfigure = false
+        aspectjweaver = false
+        resultsDir = file "$buildDir/allure-results"
     }
 }

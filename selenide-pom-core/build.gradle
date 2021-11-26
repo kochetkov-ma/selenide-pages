@@ -1,6 +1,26 @@
 dependencies {
-    implementation libs.geantyref
-    implementation libs.selenide.core
+    //// API ////
+    api libs.geantyref
+    api(libs.selenide) {
+        exclude group: 'io.opentelemetry'
 
-    testImplementation libs.selenide
+        ['selenium-devtools-v85',
+         'selenium-devtools-v93',
+         'selenium-devtools-v94',
+         'selenium-devtools-v95',
+         'selenium-firefox-driver',
+         'selenium-edge-driver',
+         'selenium-firefox-xpi-driver',
+         'selenium-ie-driver',
+         'selenium-opera-driver',
+         'selenium-safari-driver',
+         'selenium-edge-driver'
+        ].forEach { exclude module: it }
+    }
+    api(libs.allure.api) {
+        exclude group: 'org.slf4j'
+    }
+
+    //// IMPL ////
+    implementation(libs.allure) { transitive = false }
 }

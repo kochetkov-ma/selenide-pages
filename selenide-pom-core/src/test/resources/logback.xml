@@ -7,6 +7,8 @@
     </appender>
 
     <logger name="io.github.bonigarcia.wdm" level="DEBUG"/> <!-- WebDriver Manager -->
+    <logger name="online.jeteam.qa.pom" level="TRACE"/> <!-- POM -->
+    <logger name="ru.iopump.kotest.allure" level="INFO"/> <!-- ALLURE -->
 
     <root level="INFO">
         <appender-ref ref="STDOUT"/>
