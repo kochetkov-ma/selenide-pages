@@ -14,7 +14,7 @@ import java.util.*
 /**
  * Page Object для Docker 'getting-started'
  */
-@Page(value = "Стартовая страница образа getting-started", path = "tutorial", expectedTitle = "Getting Started")
+@Page(value = "Стартовая страница образа getting-started", path = "tutorial/", expectedTitle = "Getting Started")
 class DockerTutorialPage : BasePage<DockerTutorialPage>() {
 
     @Element(

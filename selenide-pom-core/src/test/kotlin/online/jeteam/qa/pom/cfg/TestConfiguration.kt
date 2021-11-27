@@ -2,6 +2,7 @@ package online.jeteam.qa.pom.cfg
 
 import com.codeborne.selenide.Configuration
 import io.kotest.core.config.AbstractProjectConfig
+import io.kotest.extensions.testcontainers.perProject
 import online.jeteam.qa.pom.page.Pages
 import org.testcontainers.containers.GenericContainer
 
@@ -12,11 +13,10 @@ object TestConfiguration : AbstractProjectConfig() {
 
     lateinit var pages: Pages
 
-    // override fun listeners(): List<Listener> = listOf(container.perProject("getting-started"))
+    override fun listeners() = listOf(container.perProject("getting-started"))
 
     override fun beforeAll() {
-        Configuration.baseUrl = "http://" + if (container.isRunning) container.host + ":" + container.firstMappedPort else "localhost"
+        Configuration.baseUrl = "http://" + if (container.isCreated) container.host + ":" + container.firstMappedPort else "localhost"
         pages = Pages.createWithStaticSelenideDriver()
-        super.beforeAll()
     }
 }

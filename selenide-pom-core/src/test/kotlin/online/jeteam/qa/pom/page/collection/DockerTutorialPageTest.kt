@@ -17,7 +17,9 @@ open class DockerTutorialPageTest : FreeSpec() {
             lateinit var tutorialPage: DockerTutorialPage
 
             "страница DockerTutorialPage открыта" {
-                tutorialPage = pages.page<DockerTutorialPage>().open().verifyOpen()
+                tutorialPage = pages.page<DockerTutorialPage>()
+                    .open()
+                    .verify()
                 Selenide.executeJavaScript<Any?>("console.error('Error message')")
                 Selenide.executeJavaScript<Any?>("console.log('Info message')")
             }

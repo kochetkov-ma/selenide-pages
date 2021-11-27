@@ -15,7 +15,7 @@ open class PartialDockerTutorialPageTest : FreeSpec() {
             lateinit var tutorialPage: PartialDockerTutorialPage
 
             "страница DockerTutorialPage открыта" {
-                tutorialPage = pages.page<PartialDockerTutorialPage>().open().verifyOpen()
+                tutorialPage = pages.page<PartialDockerTutorialPage>().open().verify()
 
                 Selenide.executeJavaScript<Any?>("console.error('Error message')")
                 Selenide.executeJavaScript<Any?>("console.log('Info message')")

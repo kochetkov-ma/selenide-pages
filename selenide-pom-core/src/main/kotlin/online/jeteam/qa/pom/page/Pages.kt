@@ -42,16 +42,16 @@ import kotlin.reflect.jvm.javaField
 data class Pages(
     val pageDriver: PageDriver,
     private val pageBaseUrl: String = pageDriver.baseUrl(),
-    private val pageFactory: PomSelenidePageFactory = PomSelenidePageFactory.INSTANCE
+    internal val pageFactory: PomSelenidePageFactory = PomSelenidePageFactory.INSTANCE
 ) {
 
     init {
         log.info { "Pages created. Base URL is '${pageBaseUrl}'. Driver is '${pageDriver::class}'. Page factory is '${pageFactory::class}'" }
     }
 
-    inline fun <reified T : online.jeteam.qa.pom.page.BasePage<*>> page(vararg pathSubstitutions: Pair<String, String>): T = page(T::class, *pathSubstitutions)
+    inline fun <reified T : BasePage<*>> page(vararg pathSubstitutions: Pair<String, String>): T = page(T::class, *pathSubstitutions)
 
-    fun <T : online.jeteam.qa.pom.page.BasePage<*>> page(pageClass: KClass<T>, vararg pathSubstitutions: Pair<String, String>): T {
+    fun <T : BasePage<*>> page(pageClass: KClass<T>, vararg pathSubstitutions: Pair<String, String>): T {
         if (!pageDriver.hasWebDriverStarted()) {
             log.debug { "Driver is not open yet. Will open on blank page" }
             pageDriver.open()
@@ -61,10 +61,10 @@ data class Pages(
         return initPage(pageFactory.page(pageDriver.driver(), pageClass.java), *pathSubstitutions)
     }
 
-    internal fun <T : online.jeteam.qa.pom.page.BasePage<*>> initPage(pageObject: T, vararg pathSubstitutions: Pair<String, String>) = pageObject.apply {
+    internal fun <T : BasePage<*>> initPage(pageObject: T, vararg pathSubstitutions: Pair<String, String>) = pageObject.apply {
         driver = pageDriver
         baseUrl = pageBaseUrl
-        sourcePageFactory = pageFactory
+        sourcePages = this@Pages
 
         applyPageAnnotation(pageObject)
         applyElementAnnotation(pageObject)
@@ -73,7 +73,7 @@ data class Pages(
         log.debug { "Initializing page '$pageObject' finished" }
     }
 
-    private fun <T : online.jeteam.qa.pom.page.BasePage<*>> applyPageAnnotation(basePage: T) {
+    private fun <T : BasePage<*>> applyPageAnnotation(basePage: T) {
         basePage::class.findAnnotation<Page>()?.let {
             basePage.name = it.value
             basePage.path = it.path
@@ -84,7 +84,7 @@ data class Pages(
     }
 
     @Suppress("UNCHECKED_CAST")
-    private fun <T : online.jeteam.qa.pom.page.BasePage<*>> applyElementAnnotation(basePage: T) {
+    private fun <T : BasePage<*>> applyElementAnnotation(basePage: T) {
         basePage.requiredElements = getRequiredElements(basePage)
 
         log.debug {

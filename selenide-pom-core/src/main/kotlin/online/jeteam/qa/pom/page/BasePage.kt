@@ -3,21 +3,27 @@ package online.jeteam.qa.pom.page
 import com.codeborne.selenide.Condition
 import com.codeborne.selenide.Modal
 import com.codeborne.selenide.SelenideElement
+import io.kotest.assertions.asClue
 import io.kotest.inspectors.forAll
 import io.kotest.matchers.string.shouldContainIgnoringCase
 import io.kotest.matchers.string.shouldMatch
 import io.qameta.allure.Step
+import mu.KotlinLogging
 import online.jeteam.qa.pom.EMPTY
 import online.jeteam.qa.pom.element.Block
 import online.jeteam.qa.pom.element.ModalDiv
-import online.jeteam.qa.pom.page.factory.PomSelenidePageFactory
 import online.jeteam.qa.pom.util.InternalExtension.mills
 import online.jeteam.qa.pom.util.withPath
 import org.awaitility.kotlin.await
+import org.openqa.selenium.WebDriverException
 import java.net.URL
+import kotlin.reflect.KClass
 
+/**
+ * Inherit from it to define your block.
+ */
 @Suppress("MemberVisibilityCanBePrivate")
-open class BasePage<SELF : BasePage<SELF>> {
+abstract class BasePage<SELF : BasePage<SELF>> {
 
     @Element("Body", tagName = "body")
     lateinit var body: SelenideElement
@@ -45,9 +51,11 @@ open class BasePage<SELF : BasePage<SELF>> {
 
     val url: String by lazy { baseUrl.withPath(path.resolve(pathSubstitutions)) }
 
+    protected open val urlAutoCorrect: Boolean = true
+
     internal lateinit var driver: PageDriver
 
-    internal lateinit var sourcePageFactory: PomSelenidePageFactory
+    internal lateinit var sourcePages: Pages
 
     private var requiredElementsInfo: String = EMPTY
 
@@ -61,8 +69,23 @@ open class BasePage<SELF : BasePage<SELF>> {
         url: String = this.url,
         pathSubstitutions: Map<String, String> = emptyMap()
     ) = let {
-        val processedPath = if (pathSubstitutions.isEmpty()) url else url.resolve(pathSubstitutions)
-        driver.open(processedPath)
+        val processedUrl = if (pathSubstitutions.isEmpty()) url else url.resolve(pathSubstitutions)
+        if (processedUrl.endsWith('/') && !urlAutoCorrect)
+            driver.open(processedUrl)
+        else try {
+            driver.open(processedUrl)
+        } catch (error: WebDriverException) {
+
+            val urlWithSlash = "$processedUrl/"
+            log.error(error) {
+                "<<<< ATTENTION >>>>" +
+                    "\nCannot open URL '$processedUrl'. " +
+                    "BasePage field urlAutoCorrect is $urlAutoCorrect. We noticed it's without '/' at the end. We will try open this URL '$urlWithSlash'. " +
+                    "If the try will be success, we recommend add '/' to each page path!\n"
+            }
+            driver.open(urlWithSlash)
+        }
+
         self()
     }
 
@@ -73,7 +96,7 @@ open class BasePage<SELF : BasePage<SELF>> {
     }
 
     @Step("Verified that page '{this.name}' opened successfully")
-    open fun verifyOpen(openAssertion: (BasePage<*>) -> Unit = defaultOpenAssertion, timeoutMs: Long = driver.timeout()): SELF {
+    open fun verify(openAssertion: (BasePage<*>) -> Unit = defaultOpenAssertion, timeoutMs: Long = driver.timeout()): SELF {
 
         await.alias("Page '$name' should be open at '$url'")
             .timeout(timeoutMs.mills)
@@ -85,8 +108,16 @@ open class BasePage<SELF : BasePage<SELF>> {
         return self()
     }
 
-    open fun <T : ModalDiv> modal(modalClass: Class<T>, vararg args: Any): T = sourcePageFactory.staticBlock(driver(), modalClass, *args)
+    open fun <T : ModalDiv> modal(modalClass: Class<T>, vararg args: Any): T = sourcePages.pageFactory.staticBlock(driver(), modalClass, *args)
         .also { it.driver = driver() }
+
+    open fun whenDo(actionFunc: SELF.() -> Unit): SELF = self().apply { actionFunc() }
+
+    open fun <T : BasePage<T>> thenOpen(newPageClass: KClass<T>, pathSubstitutions: Map<String, String> = emptyMap(), actionFunc: T.() -> Unit): T =
+        sourcePages.page(newPageClass, *pathSubstitutions.toList().toTypedArray()).verify().apply { asClue(actionFunc) }
+
+    inline fun <reified T : BasePage<T>> thenOpen(pathSubstitutions: Map<String, String> = emptyMap(), noinline actionFunc: T.() -> Unit): T =
+        thenOpen(T::class, pathSubstitutions, actionFunc)
 
     /**
      * Experimental.
@@ -96,7 +127,7 @@ open class BasePage<SELF : BasePage<SELF>> {
      *
      * Please, use [Modal] for creating static blocks via [modal].
      */
-    protected open fun <T : Block> block(blockClass: Class<T>, vararg args: Any): T = sourcePageFactory.staticBlock(driver(), blockClass, *args)
+    protected open fun <T : Block> block(blockClass: Class<T>, vararg args: Any): T = sourcePages.pageFactory.staticBlock(driver(), blockClass, *args)
 
     @Step("Verified that '{this.requiredElementsInfo}' all required elements are 'visible'")
     protected open fun assertRequiredElements(timeoutMs: Long = driver.timeout()) =
@@ -109,13 +140,15 @@ open class BasePage<SELF : BasePage<SELF>> {
         ".+$pathOnlyPattern.*".toRegex()
     }
 
-    override fun toString() =
-        "${this::class.simpleName} (title='$expectedTitle', name='$name', path='$path', requiredElements='${requiredElements.size}')"
-
     @Suppress("UNCHECKED_CAST")
     protected open fun self(): SELF = this as SELF
 
+    override fun toString() =
+        "${this::class.simpleName} (title='$expectedTitle', name='$name', path='$path', requiredElements='${requiredElements.size}')"
+
     private companion object {
+        private val log = KotlinLogging.logger {}
+
         var defaultOpenAssertion: BasePage<*>.() -> Unit = {
             if (path.isNotBlank()) driver.url() shouldMatch pathPattern
             if (expectedTitle.isNotBlank()) title() shouldContainIgnoringCase expectedTitle

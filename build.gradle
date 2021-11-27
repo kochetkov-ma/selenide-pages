@@ -47,7 +47,7 @@ allprojects {
         api libs.kotlin.logging
         /* Logging IMPL*/
         runtimeOnly libs.logback
-        
+
         // TEST //
         testImplementation libs.kotest.allure
         testImplementation libs.mockk
@@ -56,10 +56,19 @@ allprojects {
         testImplementation(platform(libs.testcontainers))
     }
 
+    def allureVersion = libs.versions.allure.get() as String
+
     allure {
-        version = libs.versions.allure.get()
-        autoconfigure = false
-        aspectjweaver = false
-        resultsDir = file "$buildDir/allure-results"
+        adapter {
+            allureJavaVersion = allureVersion
+            aspectjVersion = "1.9.8.RC3"
+            aspectjWeaver = true
+
+            frameworks {
+                junit5 {
+                    enabled = false
+                }
+            }
+        }
     }
 }

@@ -14,7 +14,7 @@ open class ModalDockerTutorialPageTest : FreeSpec() {
             lateinit var tutorialPage: ModalDockerTutorialPage
 
             "ModalDockerTutorialPage opened" {
-                tutorialPage = pages.page<ModalDockerTutorialPage>().open().verifyOpen()
+                tutorialPage = pages.page<ModalDockerTutorialPage>().open().verify()
             }
 
             "click search and open modal" {

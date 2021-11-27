@@ -43,15 +43,15 @@ class BasePageTest : StringSpec() {
         "на странице при создании должны замениться плейсхолдеры в path и проверка текущего url должна быть с заменами" {
             var page = pages.initPage(PathPage(), "id" to "1")
             every { driver.url() } returns "someBaseUrl/1/test/next/1/next/ANY_VALUE/###"
-            page.verifyOpen(timeoutMs = 200)
+            page.verify(timeoutMs = 200)
 
             page = pages.initPage(PathPage(), "uuid" to "10")
             every { driver.url() } returns "someBaseUrl/ANY_VALUE/test/next/ANY_VALUE/next/10/###"
-            page.verifyOpen(timeoutMs = 200)
+            page.verify(timeoutMs = 200)
 
             every { driver.url() } returns "someBaseUrl/ANY_VALUE/test/next/ANY_VALUE/next_ERROR/10/###"
             assertThrows<ConditionTimeoutException> {
-                page.verifyOpen(timeoutMs = 200)
+                page.verify(timeoutMs = 200)
             }
         }
     }

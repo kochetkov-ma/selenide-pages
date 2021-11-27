@@ -6,7 +6,7 @@ import online.jeteam.qa.pom.element.ModalDiv
 import online.jeteam.qa.pom.page.BasePage
 import online.jeteam.qa.pom.page.Element
 
-@Page(value = "Getting Started", path = "/tutorial", expectedTitle = "Getting Started")
+@Page(value = "Getting Started", path = "/tutorial/", expectedTitle = "Getting Started")
 class ModalDockerTutorialPage : BasePage<ModalDockerTutorialPage>() {
 
     @Element(
