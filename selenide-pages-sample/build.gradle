@@ -1,0 +1,14 @@
+dependencies {
+    testImplementation project(":selenide-pages-core")
+}
+
+def allureVersion = libs.versions.allure.get() as String
+allure {
+    adapter {
+        allureJavaVersion = allureVersion
+        aspectjVersion = "1.9.8.RC3"
+        aspectjWeaver = true
+
+        frameworks { junit5 { enabled = false } }
+    }
+}

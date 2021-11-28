@@ -1,4 +1,4 @@
-rootProject.name = 'selenide-pom'
+rootProject.name = 'selenide-pages'
 
 enableFeaturePreview('VERSION_CATALOGS')
 
@@ -40,5 +40,6 @@ dependencyResolutionManagement {
     }
 }
 
-include 'selenide-pom-core'
-include 'selenide-pom-cucumber'
+include 'selenide-pages-core'
+include 'selenide-pages-cucumber'
+include 'selenide-pages-sample'
