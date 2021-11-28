@@ -2,7 +2,7 @@ package org.brewcode.qa.pages.element
 
 import com.codeborne.selenide.ElementsCollection
 import com.codeborne.selenide.ElementsContainer
-import org.brewcode.qa.pages.annotation.NotPages
+import org.brewcode.qa.pages.annotation.NotInit
 import org.brewcode.qa.pages.element.BlocksDelegate.Companion.wrap
 
 /**
@@ -23,7 +23,7 @@ import org.brewcode.qa.pages.element.BlocksDelegate.Companion.wrap
  */
 class Blocks<T : ElementsContainer> internal constructor(
     delegate: BlocksDelegate,
-    @NotPages
+    @NotInit
     val self: ElementsCollection = delegate.self
 ) : MutableList<T> by delegate.wrap() {
 

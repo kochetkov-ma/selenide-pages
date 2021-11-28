@@ -7,7 +7,7 @@ import com.codeborne.selenide.impl.BySelectorCollection
 import com.codeborne.selenide.impl.ElementsContainerCollection
 import com.codeborne.selenide.impl.PageObjectFactory
 import com.codeborne.selenide.impl.WebElementSource
-import org.brewcode.qa.pages.annotation.NotPages
+import org.brewcode.qa.pages.annotation.NotInit
 import org.openqa.selenium.By
 import java.lang.reflect.Field
 import java.lang.reflect.Type
@@ -28,6 +28,6 @@ internal class BlocksDelegate(
         internal fun <T : ElementsContainer> ElementsContainerCollection.wrap(): MutableList<T> = this as MutableList<T>
     }
 
-    @NotPages
+    @NotInit
     internal val self: ElementsCollection = ElementsCollection(BySelectorCollection(driver, parent, selector)).`as`(alias)
 }

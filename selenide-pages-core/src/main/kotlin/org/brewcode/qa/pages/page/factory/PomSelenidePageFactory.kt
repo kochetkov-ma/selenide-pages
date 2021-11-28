@@ -8,7 +8,7 @@ import com.codeborne.selenide.ex.PageObjectException
 import com.codeborne.selenide.impl.*
 import mu.KotlinLogging
 import org.brewcode.qa.pages.annotation.Element
-import org.brewcode.qa.pages.annotation.NotPages
+import org.brewcode.qa.pages.annotation.NotInit
 import org.brewcode.qa.pages.element.Blocks
 import org.brewcode.qa.pages.element.BlocksDelegate
 import org.brewcode.qa.pages.page.factory.PagesAnnotations.Companion.builder
@@ -134,7 +134,7 @@ open class PagesSelenidePageFactory : SelenidePageFactory() {
 
         log.trace { "Start decorating field '$field'. Generics: $genericTypesInfo ..." }
         when {
-            field.isSelfElementsContainer -> if (searchContext != null && !field.isAnnotationPresent(NotPages::class.java))
+            field.isSelfElementsContainer -> if (searchContext != null && !field.isAnnotationPresent(NotInit::class.java))
                 ElementFinder.wrap(SelenideElement::class.java, searchContext) else null
             field.isWebElement -> ElementFinder.wrap(driver, searchContext, findSelector(), 0)
             field.isElementsCollection(genericTypes) -> ElementsCollection(BySelectorCollection(driver, searchContext, findSelector()))
