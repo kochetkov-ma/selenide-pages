@@ -135,21 +135,26 @@ abstract class BasePage<SELF : BasePage<SELF>> {
      */
     protected open fun <T : Block> block(blockClass: Class<T>, vararg args: Any): T = sourcePages.pageFactory.staticBlock(driver(), blockClass, *args)
 
-    @JvmName("when")
-    fun whenDo(actionFunc: SELF.() -> Void): SELF = whenDo(actionFunc)
+    ///////////////////////
+    // region KOTLIN DSL //
+    ///////////////////////
 
     @JvmSynthetic
     open fun whenDo(actionFunc: SELF.() -> Unit): SELF = self().apply { actionFunc() }
 
+    @JvmSynthetic
     inline fun <reified T : BasePage<T>> thenOpen(pathSubstitutions: Map<String, String> = emptyMap(), noinline actionFunc: T.() -> Unit): T =
         thenOpen(T::class, pathSubstitutions, actionFunc)
 
+    @JvmSynthetic
     fun <T : BasePage<T>> thenOpen(newPageClass: Class<T>, pathSubstitutions: Map<String, String> = emptyMap(), actionFunc: T.() -> Unit): T =
         thenOpen(newPageClass.kotlin, pathSubstitutions, actionFunc)
 
     @JvmSynthetic
     open fun <T : BasePage<T>> thenOpen(newPageClass: KClass<T>, pathSubstitutions: Map<String, String> = emptyMap(), actionFunc: T.() -> Unit): T =
         sourcePages.page(newPageClass, *pathSubstitutions.toList().toTypedArray()).verify().apply { asClue(actionFunc) }
+
+    // endregion
 
     @Step("Verified that '{this.requiredElementsInfo}' all required elements are 'visible'")
     protected open fun assertRequiredElements(timeoutMs: Long = driver.timeout()) =
