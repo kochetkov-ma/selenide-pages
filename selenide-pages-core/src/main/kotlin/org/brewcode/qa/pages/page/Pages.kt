@@ -40,9 +40,10 @@ import kotlin.reflect.jvm.javaField
  * Or use static one [PageDriver.selenideAsPageDriver] or  [PageDriver.asPageDriver]
  */
 @Suppress("MemberVisibilityCanBePrivate")
-data class Pages(
+data class Pages @JvmOverloads constructor(
     val pageDriver: PageDriver,
     private val pageBaseUrl: String = pageDriver.baseUrl(),
+    @JvmSynthetic
     internal val pageFactory: PagesSelenidePageFactory = PagesSelenidePageFactory.INSTANCE
 ) {
 
@@ -52,6 +53,10 @@ data class Pages(
 
     inline fun <reified T : BasePage<*>> page(vararg pathSubstitutions: Pair<String, String>): T = page(T::class, *pathSubstitutions)
 
+    @SafeVarargs
+    fun <T : BasePage<*>> page(pageClass: Class<T>, vararg pathSubstitutions: Pair<String, String>): T = page(pageClass.kotlin, *pathSubstitutions)
+
+    @JvmSynthetic
     fun <T : BasePage<*>> page(pageClass: KClass<T>, vararg pathSubstitutions: Pair<String, String>): T {
         if (!pageDriver.hasWebDriverStarted()) {
             log.debug { "Driver is not open yet. Will open on blank page" }
@@ -62,6 +67,7 @@ data class Pages(
         return initPage(pageFactory.page(pageDriver.driver(), pageClass.java), *pathSubstitutions)
     }
 
+    @JvmSynthetic
     internal fun <T : BasePage<*>> initPage(pageObject: T, vararg pathSubstitutions: Pair<String, String>) = pageObject.apply {
         driver = pageDriver
         baseUrl = pageBaseUrl
@@ -136,6 +142,7 @@ data class Pages(
          *
          * @param pageFactory Default is PagesSelenidePageFactory. Use default value if you don't extend [PagesSelenidePageFactory].
          */
+        @JvmOverloads
         fun createWithSelenideDriver(
             selenideDriver: SelenideDriver,
             pageBaseUrl: String = selenideDriver.config().baseUrl(),
@@ -151,6 +158,7 @@ data class Pages(
          *
          * @param pageFactory Default is PagesSelenidePageFactory. Use default value if you don't extend [PagesSelenidePageFactory].
          */
+        @JvmOverloads
         fun createWithStaticSelenideDriver(
             pageBaseUrl: String = Configuration.baseUrl,
             pageFactory: PagesSelenidePageFactory = PagesSelenidePageFactory()

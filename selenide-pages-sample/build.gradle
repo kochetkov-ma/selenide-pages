@@ -1,5 +1,6 @@
 dependencies {
     testImplementation project(":selenide-pages-core")
+    testImplementation "org.junit.jupiter:junit-jupiter:5.8.2"
 }
 
 def allureVersion = libs.versions.allure.get() as String
@@ -10,5 +11,14 @@ allure {
         aspectjWeaver = true
 
         frameworks { junit5 { enabled = false } }
+    }
+}
+
+test {
+    useJUnitPlatform {
+        
+        // junit-jupiter Engine for Java
+        // kotest Engine for Kotlin
+        includeEngines "junit-jupiter", "kotest"
     }
 }

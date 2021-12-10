@@ -14,11 +14,11 @@ dependencyResolutionManagement {
             alias('awaitility').to('org.awaitility', 'awaitility').versionRef('awaitility')
             alias('awaitility-kotlin').to('org.awaitility', 'awaitility-kotlin').versionRef('awaitility')
 
-            version('selenide', '6.0.3')
+            version('selenide', '6.1.1')
             alias('selenide').to('com.codeborne', 'selenide').versionRef('selenide')
             alias('selenide-core').to('com.codeborne', 'selenide-core').versionRef('selenide')
 
-            version('allure', '2.16.1')
+            version('allure', '2.17.1')
             alias('allure').to('io.qameta.allure', 'allure-selenide').versionRef('allure')
             alias('allure-api').to('io.qameta.allure', 'allure-java-commons').versionRef('allure')
 
@@ -26,7 +26,7 @@ dependencyResolutionManagement {
 
             alias('slf4j').to('org.slf4j', 'slf4j-api').version('1.7.32')
             alias('logback').to('ch.qos.logback', 'logback-classic').version('1.2.7')
-            alias('kotlin-logging').to('io.github.microutils', 'kotlin-logging-jvm').version('2.0.10')
+            alias('kotlin-logging').to('io.github.microutils', 'kotlin-logging-jvm').version('2.1.15')
 
             // TEST //
             alias('testcontainers').to('org.testcontainers', 'testcontainers-bom').version('1.16.2')

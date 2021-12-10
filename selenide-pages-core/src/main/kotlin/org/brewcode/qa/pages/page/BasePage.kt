@@ -28,23 +28,31 @@ abstract class BasePage<SELF : BasePage<SELF>> {
 
     @Element("Body", tagName = "body")
     lateinit var body: SelenideElement
+        @JvmSynthetic
+        internal set
 
     var baseUrl: String = EMPTY
+        @JvmSynthetic
         internal set
 
     var expectedTitle: String = EMPTY
+        @JvmSynthetic
         internal set
 
     var name: String = this.javaClass.name
+        @JvmSynthetic
         internal set
 
     var pathSubstitutions: Map<String, String> = emptyMap()
+        @JvmSynthetic
         internal set
 
     var path: String = EMPTY
+        @JvmSynthetic
         internal set
 
     var requiredElements: Collection<SelenideElement> = emptySet()
+        @JvmSynthetic
         internal set(value) {
             field = value
             requiredElementsInfo = value.joinToString(" | ")
@@ -54,8 +62,10 @@ abstract class BasePage<SELF : BasePage<SELF>> {
 
     protected open val urlAutoCorrect: Boolean = true
 
+    @JvmSynthetic
     internal lateinit var driver: PageDriver
 
+    @JvmSynthetic
     internal lateinit var sourcePages: Pages
 
     private var requiredElementsInfo: String = EMPTY
@@ -66,6 +76,7 @@ abstract class BasePage<SELF : BasePage<SELF>> {
     fun title() = driver.title().orEmpty()
 
     @Step("Page '{this.name}' opened at '{url}'")
+    @JvmOverloads
     open fun open(
         url: String = this.url,
         pathSubstitutions: Map<String, String> = emptyMap()
@@ -97,6 +108,7 @@ abstract class BasePage<SELF : BasePage<SELF>> {
     }
 
     @Step("Verified that page '{this.name}' opened successfully")
+    @JvmOverloads
     open fun verify(openAssertion: (BasePage<*>) -> Unit = defaultOpenAssertion, timeoutMs: Long = driver.timeout()): SELF {
 
         await.alias("Page '$name' should be open at '$url'")
@@ -109,16 +121,9 @@ abstract class BasePage<SELF : BasePage<SELF>> {
         return self()
     }
 
+    @SafeVarargs
     open fun <T : ModalDiv> modal(modalClass: Class<T>, vararg args: Any): T = sourcePages.pageFactory.staticBlock(driver(), modalClass, *args)
         .also { it.driver = driver() }
-
-    open fun whenDo(actionFunc: SELF.() -> Unit): SELF = self().apply { actionFunc() }
-
-    open fun <T : BasePage<T>> thenOpen(newPageClass: KClass<T>, pathSubstitutions: Map<String, String> = emptyMap(), actionFunc: T.() -> Unit): T =
-        sourcePages.page(newPageClass, *pathSubstitutions.toList().toTypedArray()).verify().apply { asClue(actionFunc) }
-
-    inline fun <reified T : BasePage<T>> thenOpen(pathSubstitutions: Map<String, String> = emptyMap(), noinline actionFunc: T.() -> Unit): T =
-        thenOpen(T::class, pathSubstitutions, actionFunc)
 
     /**
      * Experimental.
@@ -129,6 +134,22 @@ abstract class BasePage<SELF : BasePage<SELF>> {
      * Please, use [Modal] for creating static blocks via [modal].
      */
     protected open fun <T : Block> block(blockClass: Class<T>, vararg args: Any): T = sourcePages.pageFactory.staticBlock(driver(), blockClass, *args)
+
+    @JvmName("when")
+    fun whenDo(actionFunc: SELF.() -> Void): SELF = whenDo(actionFunc)
+
+    @JvmSynthetic
+    open fun whenDo(actionFunc: SELF.() -> Unit): SELF = self().apply { actionFunc() }
+
+    inline fun <reified T : BasePage<T>> thenOpen(pathSubstitutions: Map<String, String> = emptyMap(), noinline actionFunc: T.() -> Unit): T =
+        thenOpen(T::class, pathSubstitutions, actionFunc)
+
+    fun <T : BasePage<T>> thenOpen(newPageClass: Class<T>, pathSubstitutions: Map<String, String> = emptyMap(), actionFunc: T.() -> Unit): T =
+        thenOpen(newPageClass.kotlin, pathSubstitutions, actionFunc)
+
+    @JvmSynthetic
+    open fun <T : BasePage<T>> thenOpen(newPageClass: KClass<T>, pathSubstitutions: Map<String, String> = emptyMap(), actionFunc: T.() -> Unit): T =
+        sourcePages.page(newPageClass, *pathSubstitutions.toList().toTypedArray()).verify().apply { asClue(actionFunc) }
 
     @Step("Verified that '{this.requiredElementsInfo}' all required elements are 'visible'")
     protected open fun assertRequiredElements(timeoutMs: Long = driver.timeout()) =
