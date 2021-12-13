@@ -1,4 +1,4 @@
-package org.brewcode.qa.pages.sample.page;
+package org.brewcode.qa.pages.sample.java.page;
 
 import com.codeborne.selenide.ElementsCollection;
 import org.brewcode.qa.pages.annotation.Element;
