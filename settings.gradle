@@ -8,6 +8,7 @@ dependencyResolutionManagement {
             // PLUGIN //
             alias('kotlin').toPluginId('org.jetbrains.kotlin.jvm').version('1.6.0')
             alias('allure-gradle').toPluginId('io.qameta.allure').version('2.9.6')
+            alias('nexus').toPluginId('io.codearte.nexus-staging').version('0.30.0')
 
             // MAIN //
             version('awaitility', '4.1.1')

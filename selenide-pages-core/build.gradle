@@ -1,3 +1,8 @@
+ext.name = 'Selenide Page Object Framework'
+ext.description = 'Framework based on Selenide provided convenient functional to create and manage your app Page Objects in automation testing'
+
+apply from: "$rootDir/gradle/publishing.gradle"
+
 dependencies {
     //// API ////
     api libs.geantyref
@@ -25,10 +30,9 @@ dependencies {
     implementation(libs.allure) { transitive = false }
 }
 
-def allureVersion = libs.versions.allure.get() as String
 allure {
     adapter {
-        allureJavaVersion = allureVersion
+        allureJavaVersion = libs.versions.allure.get()
         aspectjVersion = "1.9.8.RC3"
         aspectjWeaver = true
 

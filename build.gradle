@@ -1,8 +1,9 @@
-//file:noinspection GroovyAssignabilityCheck
-//file:noinspection GrUnresolvedAccess
+// file:noinspection GroovyAssignabilityCheck
+
 plugins {
     id 'idea'
     id "com.github.ben-manes.versions" version '0.39.0'
+    alias(libs.plugins.nexus)
     alias(libs.plugins.kotlin) apply false
     alias(libs.plugins.allure.gradle) apply false
 }
@@ -21,7 +22,7 @@ tasks.named("dependencyUpdates").configure {
     }
 }
 
-allprojects {
+subprojects {
     apply plugin: 'kotlin'
     apply plugin: 'io.qameta.allure'
 
@@ -67,4 +68,13 @@ allprojects {
         testImplementation libs.kotest.containers
         testImplementation(platform(libs.testcontainers))
     }
+}
+
+nexusStaging {
+    packageGroup = "org.brewcode"
+    numberOfRetries = 50
+    delayBetweenRetriesInMillis = 5000
+    serverUrl = "https://oss.sonatype.org/service/local/"
+    username = ossrhUsername
+    password = ossrhPassword
 }

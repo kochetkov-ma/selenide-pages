@@ -1,0 +1,94 @@
+////// make release //////
+apply plugin: 'signing'
+apply plugin: 'maven-publish'
+
+static def trim(String sourceString, String trimmedChar = '"') {
+    sourceString.replaceAll(~/^\$trimmedChar+|\$trimmedChar+$/, '')
+}
+
+def loadSigningKeyFromFile() {
+    def signingKeyAbsolutePath = findProperty('signing.key.path')
+    def signingKeyFile = file(signingKeyAbsolutePath)
+    logger.lifecycle("GPG signing key will be loaded from file '$signingKeyFile'")
+    
+    return signingKeyFile.exists() ? signingKeyFile.text : ''
+}
+
+task javadocJar(type: Jar) {
+    archiveClassifier.set 'javadoc'
+    from javadoc
+    javadoc.options.addStringOption('Xdoclint:none', '-quiet')
+}
+
+task sourcesJar(type: Jar) {
+    archiveClassifier.set 'sources'
+    from sourceSets.main.allSource
+}
+
+java {
+    withJavadocJar()
+    withSourcesJar()
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            groupId = project.group
+            artifactId = project.name
+            from components.java
+            pom {
+                name = project.ext.name
+                description = project.ext.description
+                url = 'https://gitlab.com/brewcode/selenide-pages'
+
+                packaging 'jar'
+
+                licenses {
+                    license {
+                        name = 'The Apache License, Version 2.0'
+                        url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+                developers {
+                    developer {
+                        id = 'brewcode'
+                        name = 'brewcode.org'
+                        email = 'dev@brewcode.org'
+                    }
+                    developer {
+                        id = 'kochetkov-ma'
+                        name = 'Maxim Kochetkov'
+                        email = 'kochetkov-ma@yandex.ru'
+                    }
+                }
+                scm {
+                    connection = 'https://gitlab.com/brewcode/selenide-pages.git'
+                    developerConnection = 'https://gitlab.com/brewcode/selenide-pages.git'
+                    url = 'https://gitlab.com/brewcode/selenide-pages'
+                }
+            }
+        }
+    }
+    repositories {
+        maven {
+            name = 'ossrh'
+            credentials {
+                username ossrhUsername
+                password ossrhPassword
+            }
+            url = version.endsWith('SNAPSHOT')
+                ? "https://s01.oss.sonatype.org/content/repositories/snapshots/"
+                : "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
+        }
+    }
+}
+
+signing {
+    String signingKeyText = trim(System.getenv('GPG_SIGNING_KEY') ?: loadSigningKeyFromFile())
+    String signingPassword = trim(findProperty('signing.password') as String ?: '')
+
+    logger.lifecycle("GPG signing key: ${signingKeyText.take(100)} ******")
+
+    useInMemoryPgpKeys(signingKeyText, signingPassword)
+    sign publishing.publications.maven
+}
