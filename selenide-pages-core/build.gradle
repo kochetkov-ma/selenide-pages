@@ -7,8 +7,6 @@ dependencies {
     //// API ////
     api libs.geantyref
     api(libs.selenide) {
-        exclude group: 'io.opentelemetry'
-
         ['selenium-devtools-v85',
          'selenium-devtools-v93',
          'selenium-devtools-v94',
@@ -28,6 +26,8 @@ dependencies {
 
     //// IMPL ////
     implementation(libs.allure) { transitive = false }
+
+    testImplementation 'org.testcontainers:selenium'
 }
 
 allure {
