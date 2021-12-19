@@ -73,8 +73,8 @@ publishing {
         maven {
             name = 'ossrh'
             credentials {
-                username property('ossrhUsername', '')
-                password property('ossrhPassword', '')
+                username project.findProperty('ossrhUsername') ?: ''
+                password project.findProperty('ossrhPassword') ?: ''
             }
             url = version.endsWith('SNAPSHOT')
                 ? "https://s01.oss.sonatype.org/content/repositories/snapshots/"

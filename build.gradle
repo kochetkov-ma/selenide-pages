@@ -75,6 +75,6 @@ nexusStaging {
     numberOfRetries = 50
     delayBetweenRetriesInMillis = 5000
     serverUrl = "https://oss.sonatype.org/service/local/"
-    username = property('ossrhUsername', '')
-    password = property('ossrhPassword', '')
+    username = project.findProperty('ossrhUsername') ?: ''
+    password = project.findProperty('ossrhPassword') ?: ''
 }
