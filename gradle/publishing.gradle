@@ -8,7 +8,7 @@ static def trim(String sourceString, String trimmedChar = '"') {
 
 def loadSigningKeyFromFile() {
     def signingKeyAbsolutePath = findProperty('signing.key.path') as String
-    def signingKeyFile = !signingKeyAbsolutePath.isBlank() ? file(signingKeyAbsolutePath) : null 
+    def signingKeyFile = !(signingKeyAbsolutePath == null || signingKeyAbsolutePath.isBlank()) ? file(signingKeyAbsolutePath) : null 
     logger.lifecycle("GPG signing key will be loaded from file '$signingKeyFile'")
 
     return signingKeyFile?.exists() ? signingKeyFile.text : ''
