@@ -1,0 +1,72 @@
+#######################
+###### TEMPLATES ######
+
+.gradle:build:
+  image: $CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX/gradle:7.2.0-jdk11
+  stage: build
+  needs: [ ]
+  cache:
+    key: gradle-$SP_MODULE
+    paths:
+      - $CI_PROJECT_PATH/.gradle/
+    when: always
+  script:
+    - gradle -g $CI_PROJECT_PATH/.gradle/ --no-daemon -p $SP_MODULE build -Pversion=SP_VERSION -i -s
+  artifacts:
+    expire_in: 30 minutes
+    paths:
+      - $SP_MODULE/build/libs/*.jar
+    reports:
+      junit:
+        - $SP_MODULE/**/build/test-results/test/TEST-*.xml
+  interruptible: true
+  variables:
+    SP_VERSION: $CI_COMMIT_REF_NAME-$CI_PIPELINE_IID
+  only:
+    refs:
+      - master
+      - merge_requests
+
+.gradle:release:
+  image: $CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX/gradle:7.2.0-jdk11
+  stage: build
+  cache:
+    key: gradle-$SP_MODULE
+    paths:
+      - $CI_PROJECT_PATH/.gradle/
+    when: always
+  script:
+    - |
+      gradle -g $CI_PROJECT_PATH/.gradle/ --no-daemon -i -s \
+      -p $SP_MODULE \ 
+      -Pversion=$SP_VERSION  \
+      -Psigning.password=$GPG_SIGNING_PASSWORD \
+      -PossrhUsername=kochetkov-ma \
+      -PossrhPassword=$OSSRH_PASSWORD \
+      publish \
+      closeAndReleaseRepository
+  artifacts:
+    expire_in: 30 minutes
+    paths:
+      - $SP_MODULE/build/libs/*.jar
+  interruptible: true
+  variables:
+    SP_VERSION: ${CI_COMMIT_TAG#v}
+  only:
+    refs:
+      - /^v\d+.\d+.\d+$/
+
+##################
+###### JOBS ######
+sp-core:build:
+  extends:
+    - .gradle:build
+    - .sp-core
+
+sp-core:release:
+  extends:
+    - .gradle:release
+    - .sp-core
+  needs:
+    - job: sp-core:build
+      artifacts: true

@@ -1,0 +1,6 @@
+.sp-core:
+  variables:
+    SP_MODULE: selenide-pages-core
+  only:
+    changes:
+      - selenide-pages-core/**/*

@@ -1,7 +1,17 @@
 include:
-  - local: .gitlab/build.yaml
-  - local: .gitlab/release.yaml
+  - local: ".gitlab/release.yml"
+  - local: ".gitlab/modules.yml"
 
 stages:
   - build
   - release
+
+variables:
+  DOCKER_DRIVER: overlay2
+  DOCKER_TLS_CERTDIR: ""
+  DOCKER_HOST: tcp://docker:2375/
+  IMIN_VERSION: $CI_COMMIT_REF_NAME-$CI_PIPELINE_IID
+
+services:
+  - name: docker:20.10.6-dind
+    command: ["--experimental"]

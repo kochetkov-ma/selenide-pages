@@ -10,7 +10,7 @@ def loadSigningKeyFromFile() {
     def signingKeyAbsolutePath = findProperty('signing.key.path')
     def signingKeyFile = file(signingKeyAbsolutePath)
     logger.lifecycle("GPG signing key will be loaded from file '$signingKeyFile'")
-    
+
     return signingKeyFile.exists() ? signingKeyFile.text : ''
 }
 
@@ -73,8 +73,8 @@ publishing {
         maven {
             name = 'ossrh'
             credentials {
-                username ossrhUsername
-                password ossrhPassword
+                username property('ossrhUsername', '')
+                password property('ossrhPassword', '')
             }
             url = version.endsWith('SNAPSHOT')
                 ? "https://s01.oss.sonatype.org/content/repositories/snapshots/"
