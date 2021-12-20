@@ -10,6 +10,8 @@
     paths:
       - $CI_PROJECT_PATH/.gradle/
     when: always
+  before_script:
+    - docker login -u $CI_DEPENDENCY_PROXY_USER -p $CI_DEPENDENCY_PROXY_PASSWORD $CI_DEPENDENCY_PROXY_SERVER
   script:
     - gradle -g $CI_PROJECT_PATH/.gradle/ --no-daemon -p $SP_MODULE build -Pversion=SP_VERSION -i -s
   artifacts:
@@ -25,6 +27,7 @@
       junit:
         - $SP_MODULE/**/build/test-results/test/TEST-*.xml
   variables:
+    TESTCONTAINERS_HUB_IMAGE_NAME_PREFIX: $CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX
     SP_VERSION: $CI_COMMIT_REF_NAME-$CI_PIPELINE_IID
   only:
     refs:
@@ -49,6 +52,11 @@
       -PossrhUsername=kochetkov-ma
       -PossrhPassword=$OSSRH_PASSWORD
       publish
+    - >
+      gradle -g $CI_PROJECT_PATH/.gradle/ --no-daemon -i -s
+      -p $SP_MODULE
+      -PossrhUsername=kochetkov-ma
+      -PossrhPassword=$OSSRH_PASSWORD
       closeAndReleaseRepository
   artifacts:
     expire_in: 30 minutes

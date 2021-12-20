@@ -17,13 +17,13 @@ import org.testcontainers.utility.DockerImageName
 @Suppress("HttpUrlsUsage")
 object TestConfiguration : AbstractProjectConfig() {
 
-    override val parallelism: Int = 4 
+    override val parallelism: Int = 4
 
     private var testNetwork: Network = Network.newNetwork()
 
     private var alias = "getting-started"
 
-    private val container: GenericContainer<Nothing> = GenericContainer<Nothing>("docker/getting-started").apply {
+    private val container: GenericContainer<Nothing> = GenericContainer<Nothing>(DockerImageName.parse("docker/getting-started")).apply {
         withExposedPorts(80)
         withNetwork(testNetwork)
         withNetworkAliases(alias)
