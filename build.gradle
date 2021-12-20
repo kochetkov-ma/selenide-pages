@@ -74,7 +74,7 @@ nexusStaging {
     packageGroup = "org.brewcode"
     numberOfRetries = 50
     delayBetweenRetriesInMillis = 5000
-    serverUrl = "https://oss.sonatype.org/service/local/"
+    serverUrl = "https://s01.oss.sonatype.org/service/local/"
     username = project.findProperty('ossrhUsername') ?: ''
     password = project.findProperty('ossrhPassword') ?: ''
 }
