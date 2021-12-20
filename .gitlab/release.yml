@@ -59,12 +59,7 @@
       -PossrhUsername=kochetkov-ma
       -PossrhPassword=$OSSRH_PASSWORD
       publish
-    - >
-      gradle -g $CI_PROJECT_PATH/.gradle/ --no-daemon -i -s
-      -p $SP_MODULE
-      -PossrhUsername=kochetkov-ma
-      -PossrhPassword=$OSSRH_PASSWORD
-      closeAndReleaseRepository
+    - gradle -g $CI_PROJECT_PATH/.gradle/ --no-daemon -i -s -PossrhUsername=kochetkov-ma -PossrhPassword=$OSSRH_PASSWORD closeAndReleaseRepository
   artifacts:
     expire_in: 30 minutes
     paths:
