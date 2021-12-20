@@ -45,9 +45,13 @@
     paths:
       - $CI_PROJECT_PATH/.gradle/
     when: always
+  before_script:
+    - echo "Tag is $CI_COMMIT_TAG"
+    - SP_VERSION=${CI_COMMIT_TAG#v}
+    - echo "Publication version is $SP_VERSION"
   script:
     - >
-      gradle -g $CI_PROJECT_PATH/.gradle/ --no-daemon -i -s
+      gradle -g $CI_PROJECT_PATH/.gradle/ --no-daemon -i -s --build-cache
       -p $SP_MODULE
       -Pversion=$SP_VERSION
       -Psigning.password=$GPG_SIGNING_PASSWORD
@@ -59,8 +63,6 @@
     expire_in: 30 minutes
     paths:
       - $SP_MODULE/build/libs/*.jar
-  variables:
-    SP_VERSION: ${CI_COMMIT_TAG#v}
   only:
     refs:
       - !reference [.version_tag]

@@ -5,6 +5,6 @@
   only:
     changes:
       - selenide-pages-core/**/*
-        
+
 .version_tag:
   /^v\d+.\d+.\d+$/
