@@ -1,7 +1,6 @@
 package org.brewcode.qa.pages.cfg
 
 import com.codeborne.selenide.Configuration
-import io.kotest.common.ExperimentalKotest
 import io.kotest.core.config.AbstractProjectConfig
 import io.kotest.extensions.testcontainers.perProject
 import io.kotest.mpp.env
@@ -18,10 +17,7 @@ import org.testcontainers.utility.DockerImageName
 @Suppress("HttpUrlsUsage")
 object TestConfiguration : AbstractProjectConfig() {
 
-    @ExperimentalKotest
-    override val concurrentSpecs: Int = 4
-
-    override val parallelism: Int = 4
+    override val parallelism: Int = 4 
 
     private var testNetwork: Network = Network.newNetwork()
 
