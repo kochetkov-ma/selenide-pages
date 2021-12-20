@@ -14,10 +14,12 @@ open class DslDockerTutorialPageTest : StringSpec() {
     init {
 
         "Scenario: base page dsl" {
+            var throwError = true
             pages.page<ModalDockerTutorialPage>()
                 .open()
                 .verify()
-                .whenDo {
+                .whenDoWithRetry({ throwError = false }) {
+                    if (throwError) throw IllegalStateException("Should be ignored")
                     link.click()
                 }.thenOpen<CommandDockerTutorialPage> {
                     body.shouldNotBeNull()

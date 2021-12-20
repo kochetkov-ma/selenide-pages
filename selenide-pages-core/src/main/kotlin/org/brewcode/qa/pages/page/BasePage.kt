@@ -143,15 +143,24 @@ abstract class BasePage<SELF : BasePage<SELF>> {
     open fun whenDo(actionFunc: SELF.() -> Unit): SELF = self().apply { actionFunc() }
 
     @JvmSynthetic
-    inline fun <reified T : BasePage<T>> thenOpen(pathSubstitutions: Map<String, String> = emptyMap(), noinline actionFunc: T.() -> Unit): T =
+    open fun whenDoWithRetry(onFail: SELF.(Throwable) -> Unit = { Thread.sleep(100) }, actionFunc: SELF.() -> Unit): SELF =
+        whenDo {
+            runCatching(actionFunc).onFailure {
+                onFail(it)
+                actionFunc()
+            }
+        }
+
+    @JvmSynthetic
+    inline fun <reified T : BasePage<T>> thenOpen(pathSubstitutions: Map<String, String> = emptyMap(), noinline actionFunc: T.() -> Unit = {}): T =
         thenOpen(T::class, pathSubstitutions, actionFunc)
 
     @JvmSynthetic
-    fun <T : BasePage<T>> thenOpen(newPageClass: Class<T>, pathSubstitutions: Map<String, String> = emptyMap(), actionFunc: T.() -> Unit): T =
+    fun <T : BasePage<T>> thenOpen(newPageClass: Class<T>, pathSubstitutions: Map<String, String> = emptyMap(), actionFunc: T.() -> Unit = {}): T =
         thenOpen(newPageClass.kotlin, pathSubstitutions, actionFunc)
 
     @JvmSynthetic
-    open fun <T : BasePage<T>> thenOpen(newPageClass: KClass<T>, pathSubstitutions: Map<String, String> = emptyMap(), actionFunc: T.() -> Unit): T =
+    open fun <T : BasePage<T>> thenOpen(newPageClass: KClass<T>, pathSubstitutions: Map<String, String> = emptyMap(), actionFunc: T.() -> Unit = {}): T =
         sourcePages.page(newPageClass, *pathSubstitutions.toList().toTypedArray()).verify().apply { asClue(actionFunc) }
 
     // endregion
