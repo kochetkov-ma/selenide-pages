@@ -11,7 +11,7 @@ def loadSigningKeyFromFile() {
     def signingKeyFile = !(signingKeyAbsolutePath == null || signingKeyAbsolutePath.isBlank()) ? file(signingKeyAbsolutePath) : null 
     logger.lifecycle("GPG signing key will be loaded from file '$signingKeyFile'")
 
-    return signingKeyFile?.exists() ? signingKeyFile.text : ''
+    return (signingKeyFile?.exists() ?: false) ? signingKeyFile.text : ''
 }
 
 task javadocJar(type: Jar) {
