@@ -29,7 +29,7 @@
 
 .gradle:release:
   image: $CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX/gradle:7.2.0-jdk11
-  stage: build
+  stage: release
   cache:
     key: gradle-$SP_MODULE
     paths:
