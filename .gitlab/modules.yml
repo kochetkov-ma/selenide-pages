@@ -1,0 +1,10 @@
+# Описание пути и особых переменных для модуля selenide-pages-core
+.sp-core:
+  variables:
+    SP_MODULE: selenide-pages-core
+  only:
+    changes:
+      - selenide-pages-core/**/*
+
+.version_tag:
+  /^v\d+.\d+.\d+$/

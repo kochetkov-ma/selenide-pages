@@ -7,7 +7,7 @@
     </appender>
 
     <logger name="io.github.bonigarcia.wdm" level="DEBUG"/> <!-- WebDriver Manager -->
-    <logger name="org.brewcode.qa.pages" level="TRACE"/> <!-- pages -->
+    <logger name="org.brewcode.qa.pages" level="INFO"/> <!-- pages -->
     <logger name="ru.iopump.kotest.allure" level="INFO"/> <!-- ALLURE -->
 
     <root level="INFO">

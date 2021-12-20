@@ -1,8 +1,11 @@
 package org.brewcode.qa.pages.page.modal
 
 import com.codeborne.selenide.Condition
+import io.kotest.assertions.retry
 import io.kotest.core.spec.style.FreeSpec
+import junit.framework.AssertionFailedError
 import org.brewcode.qa.pages.cfg.TestConfiguration
+import kotlin.time.Duration.Companion.seconds
 
 open class ModalDockerTutorialPageTest : FreeSpec() {
 
@@ -18,14 +21,16 @@ open class ModalDockerTutorialPageTest : FreeSpec() {
             }
 
             "click search and open modal" {
-                tutorialPage.search.click()
-                val searchModal = tutorialPage.modal(SearchModal::class.java)
-                searchModal.input.shouldBe(Condition.visible)
-                searchModal.result.shouldBe(Condition.visible)
-
-                searchModal.clickOutsideLeft()
-
-                tutorialPage.link.click()
+                val action = {
+                    tutorialPage.search.click()
+                    val searchModal = tutorialPage.modal(SearchModal::class.java)
+                    searchModal.input.shouldBe(Condition.visible)
+                    searchModal.result.shouldBe(Condition.visible)
+                    searchModal.clickOutsideLeft()
+                    tutorialPage.link.click()
+                }
+                
+                runCatching(action).onFailure { action() }
             }
         }
     }

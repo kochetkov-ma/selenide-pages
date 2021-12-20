@@ -7,11 +7,11 @@ static def trim(String sourceString, String trimmedChar = '"') {
 }
 
 def loadSigningKeyFromFile() {
-    def signingKeyAbsolutePath = findProperty('signing.key.path')
-    def signingKeyFile = file(signingKeyAbsolutePath)
+    def signingKeyAbsolutePath = findProperty('signing.key.path') as String
+    def signingKeyFile = !(signingKeyAbsolutePath == null || signingKeyAbsolutePath.isBlank()) ? file(signingKeyAbsolutePath) : null 
     logger.lifecycle("GPG signing key will be loaded from file '$signingKeyFile'")
-    
-    return signingKeyFile.exists() ? signingKeyFile.text : ''
+
+    return (signingKeyFile?.exists() ?: false) ? signingKeyFile.text : ''
 }
 
 task javadocJar(type: Jar) {
@@ -73,8 +73,8 @@ publishing {
         maven {
             name = 'ossrh'
             credentials {
-                username ossrhUsername
-                password ossrhPassword
+                username project.findProperty('ossrhUsername') ?: ''
+                password project.findProperty('ossrhPassword') ?: ''
             }
             url = version.endsWith('SNAPSHOT')
                 ? "https://s01.oss.sonatype.org/content/repositories/snapshots/"
