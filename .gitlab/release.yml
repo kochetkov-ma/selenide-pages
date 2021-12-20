@@ -23,12 +23,7 @@
   artifacts:
     expire_in: 10 minutes
     paths:
-      - $SP_MODULE/build/classes/
-      - $SP_MODULE/build/generated/
-      - $SP_MODULE/build/resources/
-      - $SP_MODULE/build/tmp/
-      - $SP_MODULE/build/kotlin/
-      - $SP_MODULE/build/libs/*.jar
+      - $SP_MODULE/build/
     reports:
       junit:
         - $SP_MODULE/**/build/test-results/test/TEST-*.xml
