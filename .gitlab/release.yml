@@ -41,14 +41,14 @@
       - $CI_PROJECT_PATH/.gradle/
     when: always
   script:
-    - |
-      gradle -g $CI_PROJECT_PATH/.gradle/ --no-daemon -i -s \
-      -p $SP_MODULE \ 
-      -Pversion=$SP_VERSION  \
-      -Psigning.password=$GPG_SIGNING_PASSWORD \
-      -PossrhUsername=kochetkov-ma \
-      -PossrhPassword=$OSSRH_PASSWORD \
-      publish \
+    - >
+      gradle -g $CI_PROJECT_PATH/.gradle/ --no-daemon -i -s
+      -p $SP_MODULE
+      -Pversion=$SP_VERSION
+      -Psigning.password=$GPG_SIGNING_PASSWORD
+      -PossrhUsername=kochetkov-ma
+      -PossrhPassword=$OSSRH_PASSWORD
+      publish
       closeAndReleaseRepository
   artifacts:
     expire_in: 30 minutes
