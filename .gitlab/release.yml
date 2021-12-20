@@ -10,8 +10,6 @@
     paths:
       - $CI_PROJECT_PATH/.gradle/
     when: always
-  before_script:
-    - docker login -u $CI_DEPENDENCY_PROXY_USER -p $CI_DEPENDENCY_PROXY_PASSWORD $CI_DEPENDENCY_PROXY_SERVER
   script:
     - gradle -g $CI_PROJECT_PATH/.gradle/ --no-daemon -p $SP_MODULE build -Pversion=SP_VERSION -i -s
   artifacts:
