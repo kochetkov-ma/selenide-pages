@@ -13,19 +13,24 @@
   script:
     - gradle -g $CI_PROJECT_PATH/.gradle/ --no-daemon -p $SP_MODULE build -Pversion=SP_VERSION -i -s
   artifacts:
-    expire_in: 30 minutes
+    expire_in: 10 minutes
     paths:
+      - $SP_MODULE/build/classes/
+      - $SP_MODULE/build/generated/
+      - $SP_MODULE/build/resources/
+      - $SP_MODULE/build/tmp/
+      - $SP_MODULE/build/kotlin/
       - $SP_MODULE/build/libs/*.jar
     reports:
       junit:
         - $SP_MODULE/**/build/test-results/test/TEST-*.xml
-  interruptible: true
   variables:
     SP_VERSION: $CI_COMMIT_REF_NAME-$CI_PIPELINE_IID
   only:
     refs:
       - master
       - merge_requests
+      - $RELEASE_TAG_PATTERN
 
 .gradle:release:
   image: $CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX/gradle:7.2.0-jdk11
@@ -49,12 +54,11 @@
     expire_in: 30 minutes
     paths:
       - $SP_MODULE/build/libs/*.jar
-  interruptible: true
   variables:
     SP_VERSION: ${CI_COMMIT_TAG#v}
   only:
     refs:
-      - /^v\d+.\d+.\d+$/
+      - $RELEASE_TAG_PATTERN
 
 ##################
 ###### JOBS ######
