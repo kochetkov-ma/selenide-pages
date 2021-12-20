@@ -10,6 +10,10 @@
     paths:
       - $CI_PROJECT_PATH/.gradle/
     when: always
+  before_script:
+    - CI_DEPENDENCY_PROXY_AUTH=$(echo -n "$CI_DEPENDENCY_PROXY_USER:$CI_DEPENDENCY_PROXY_PASSWORD" | base64)
+    - >
+      echo "{ \"auths\": { \"$CI_DEPENDENCY_PROXY_SERVER\": { \"auth\": \"$CI_DEPENDENCY_PROXY_AUTH\", \"email\": \"email\" } } }" > ~/.docker/config.json
   script:
     - gradle -g $CI_PROJECT_PATH/.gradle/ --no-daemon -p $SP_MODULE build -Pversion=SP_VERSION -i -s
   artifacts:
