@@ -11,6 +11,7 @@
       - $CI_PROJECT_PATH/.gradle/
     when: always
   before_script:
+    - touch ~/.docker/config.json
     - CI_DEPENDENCY_PROXY_AUTH=$(echo -n "$CI_DEPENDENCY_PROXY_USER:$CI_DEPENDENCY_PROXY_PASSWORD" | base64)
     - >
       echo "{ \"auths\": { \"$CI_DEPENDENCY_PROXY_SERVER\": { \"auth\": \"$CI_DEPENDENCY_PROXY_AUTH\", \"email\": \"email\" } } }" > ~/.docker/config.json
