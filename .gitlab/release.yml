@@ -11,8 +11,11 @@
       - $CI_PROJECT_PATH/.gradle/
     when: always
   before_script:
+    # Создать файл конфигурации для Java Docker (так как docker CLI тут нет) 
     - mkdir ~/.docker && touch ~/.docker/config.json
+    # Base64 пользователь и пароль
     - CI_DEPENDENCY_PROXY_AUTH=$(echo -n "$CI_DEPENDENCY_PROXY_USER:$CI_DEPENDENCY_PROXY_PASSWORD" | base64)
+    # Создать JSON config.json
     - >
       echo "{ \"auths\": { \"$CI_DEPENDENCY_PROXY_SERVER\": { \"auth\": \"$CI_DEPENDENCY_PROXY_AUTH\", \"email\": \"email\" } } }" > ~/.docker/config.json
   script:
@@ -30,6 +33,7 @@
       junit:
         - $SP_MODULE/**/build/test-results/test/TEST-*.xml
   variables:
+    # Переменная TestContainer, которая подключает Registry, если используются 'DockerImageName.parse', а не просто String.
     TESTCONTAINERS_HUB_IMAGE_NAME_PREFIX: ${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}/
     SP_VERSION: $CI_COMMIT_REF_NAME-$CI_PIPELINE_IID
   only:
