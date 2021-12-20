@@ -30,7 +30,7 @@
     refs:
       - master
       - merge_requests
-      - $RELEASE_TAG_PATTERN
+      - !reference [.version_tag]
 
 .gradle:release:
   image: $CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX/gradle:7.2.0-jdk11
@@ -58,7 +58,7 @@
     SP_VERSION: ${CI_COMMIT_TAG#v}
   only:
     refs:
-      - $RELEASE_TAG_PATTERN
+      - !reference [.version_tag]
 
 ##################
 ###### JOBS ######

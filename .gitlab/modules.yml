@@ -2,7 +2,9 @@
 .sp-core:
   variables:
     SP_MODULE: selenide-pages-core
-    RELEASE_TAG_PATTERN: /^v\d+.\d+.\d+$/
   only:
     changes:
       - selenide-pages-core/**/*
+        
+.version_tag:
+  /^v\d+.\d+.\d+$/
