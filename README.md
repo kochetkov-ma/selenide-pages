@@ -1,4 +1,4 @@
-![Maven Central](https://img.shields.io/maven-central/v/org.brewcode/selenide-pages-core)
+[![Maven Central](https://img.shields.io/maven-central/v/org.brewcode/selenide-pages-core)](https://search.maven.org/#search|ga|1|selenide-pages-core)
 # Selenide pages
 
 ![selenide pages](pages.png)
