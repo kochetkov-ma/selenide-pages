@@ -81,3 +81,11 @@ sp-core:release:
   needs:
     - job: sp-core:build
       artifacts: true
+
+sp-any:build:
+  stage: build
+  extends:
+    - .sp-any
+  script:
+    - echo "No tests run, but this pipeline always succeeds and enables merge."
+    - echo true

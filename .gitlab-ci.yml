@@ -14,5 +14,5 @@ variables:
   GPG_SIGNING_KEY: $GPG_SIGNING_KEY
 
 services:
-  - name: docker:20.10.6-dind
+  - name: docker:20.10.12-dind
     command: ["--experimental"]
