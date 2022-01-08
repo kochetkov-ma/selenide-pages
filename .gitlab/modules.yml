@@ -8,3 +8,7 @@
 
 .version_tag:
   /^v\d+.\d+.\d+$/
+  
+.sp-any:
+  expcept:
+    !reference [.sp-core.only]
