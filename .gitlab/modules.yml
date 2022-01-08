@@ -11,4 +11,4 @@
   
 .sp-any:
   expcept:
-    !reference [.sp-core.only]
+    !reference [.sp-core, only]
