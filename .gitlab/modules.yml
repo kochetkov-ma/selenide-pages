@@ -10,5 +10,5 @@
   /^v\d+.\d+.\d+$/
   
 .sp-any:
-  expcept:
+  except:
     !reference [.sp-core, only]
