@@ -5,6 +5,8 @@
   only:
     changes:
       - selenide-pages-core/**/*
+      - .gitlab/*
+      - .gitlab-ci.yml
 
 .version_tag:
   /^v\d+.\d+.\d+$/
