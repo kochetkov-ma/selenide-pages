@@ -2,7 +2,7 @@
 
 plugins {
     id 'idea'
-    id "com.github.ben-manes.versions" version '0.39.0'
+    id "com.github.ben-manes.versions" version '0.44.0'
     alias(libs.plugins.nexus)
     alias(libs.plugins.kotlin) apply false
     alias(libs.plugins.allure.gradle) apply false

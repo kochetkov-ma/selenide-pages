@@ -6,37 +6,37 @@ dependencyResolutionManagement {
     versionCatalogs {
         libs {
             // PLUGIN //
-            alias('kotlin').toPluginId('org.jetbrains.kotlin.jvm').version('1.6.10')
-            alias('allure-gradle').toPluginId('io.qameta.allure').version('2.9.6')
+            alias('kotlin').toPluginId('org.jetbrains.kotlin.jvm').version('1.7.21')
+            alias('allure-gradle').toPluginId('io.qameta.allure').version('2.11.2')
             alias('nexus').toPluginId('io.codearte.nexus-staging').version('0.30.0')
 
             // MAIN //
-            version('awaitility', '4.1.1')
+            version('awaitility', '4.2.0')
             alias('awaitility').to('org.awaitility', 'awaitility').versionRef('awaitility')
             alias('awaitility-kotlin').to('org.awaitility', 'awaitility-kotlin').versionRef('awaitility')
 
-            version('selenide', '6.1.1')
+            version('selenide', '6.9.0')
             alias('selenide').to('com.codeborne', 'selenide').versionRef('selenide')
             alias('selenide-core').to('com.codeborne', 'selenide-core').versionRef('selenide')
 
-            version('allure', '2.17.2')
+            version('allure', '2.20.1')
             alias('allure').to('io.qameta.allure', 'allure-selenide').versionRef('allure')
             alias('allure-api').to('io.qameta.allure', 'allure-java-commons').versionRef('allure')
 
             alias('geantyref').to('io.leangen.geantyref', 'geantyref').version('1.3.13')
 
-            alias('slf4j').to('org.slf4j', 'slf4j-api').version('1.7.32')
-            alias('logback').to('ch.qos.logback', 'logback-classic').version('1.2.8')
-            alias('kotlin-logging').to('io.github.microutils', 'kotlin-logging-jvm').version('2.1.16')
+            alias('slf4j').to('org.slf4j', 'slf4j-api').version('2.0.3')
+            alias('logback').to('ch.qos.logback', 'logback-classic').version('1.4.4')
+            alias('kotlin-logging').to('io.github.microutils', 'kotlin-logging-jvm').version('3.0.4')
 
             // TEST //
-            alias('testcontainers').to('org.testcontainers', 'testcontainers-bom').version('1.16.2')
-            alias('mockk').to('io.mockk', 'mockk').version('1.12.1')
-            version('kotest', '4.6.4')
+            alias('testcontainers').to('org.testcontainers', 'testcontainers-bom').version('1.17.5')
+            alias('mockk').to('io.mockk', 'mockk').version('1.13.2')
+            version('kotest', '5.5.4')
             alias('kotest-runner').to('io.kotest', 'kotest-runner-junit5').versionRef('kotest')
             alias('kotest-assertions').to('io.kotest', 'kotest-assertions-core').versionRef('kotest')
-            alias('kotest-containers').to('io.kotest.extensions', 'kotest-extensions-testcontainers').version('1.0.1')
-            alias('kotest-allure').to('ru.iopump.kotest', 'kotest-allure').version('1.2.0')
+            alias('kotest-containers').to('io.kotest.extensions', 'kotest-extensions-testcontainers').version('1.3.4')
+            alias('kotest-allure').to('ru.iopump.kotest', 'kotest-allure').version('5.4.1')
         }
     }
 }

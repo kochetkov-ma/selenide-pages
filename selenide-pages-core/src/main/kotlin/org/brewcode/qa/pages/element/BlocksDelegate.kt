@@ -21,7 +21,7 @@ internal class BlocksDelegate(
     genericTypes: Array<out Type>,
     selector: By,
     alias: String = "-",
-) : ElementsContainerCollection(pageFactory, driver, parent, field, listType, genericTypes, selector) {
+) : ElementsContainerCollection(pageFactory, driver, field, listType, genericTypes, BySelectorCollection(driver, parent, selector)) {
 
     internal companion object {
         @Suppress("UNCHECKED_CAST")
