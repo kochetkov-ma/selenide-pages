@@ -15,7 +15,7 @@ dependencyResolutionManagement {
             alias('awaitility').to('org.awaitility', 'awaitility').versionRef('awaitility')
             alias('awaitility-kotlin').to('org.awaitility', 'awaitility-kotlin').versionRef('awaitility')
 
-            version('selenide', '6.9.0')
+            version('selenide', '6.19.1')
             alias('selenide').to('com.codeborne', 'selenide').versionRef('selenide')
             alias('selenide-core').to('com.codeborne', 'selenide-core').versionRef('selenide')
 

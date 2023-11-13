@@ -1,5 +1,6 @@
 package org.brewcode.qa.pages.page.factory
 
+import com.codeborne.selenide.Container
 import com.codeborne.selenide.Driver
 import com.codeborne.selenide.ElementsCollection
 import com.codeborne.selenide.ElementsContainer
@@ -45,7 +46,7 @@ open class PagesSelenidePageFactory : SelenidePageFactory() {
 
         try {
             val self = ElementFinder.wrap(driver, selector)
-            val searchContext = object : WebElementWrapper(driver, self) {}
+            val searchContext = object : WebElementWrapper(driver, self, null) {}
 
             val argsType = args.map { it::class.java }.toTypedArray()
             val constructor: Constructor<T> = blockClass.getDeclaredConstructor(*argsType)
@@ -148,7 +149,7 @@ open class PagesSelenidePageFactory : SelenidePageFactory() {
             .also { log.trace { "Finish decorating field '$field' with locator '$thisSelector' and genericTypes '$genericTypesInfo'. Element: '${it.cls}'" } }
     }
 
-    override fun initElementsContainer(driver: Driver, field: Field, self: WebElementSource, type: Class<*>, genericTypes: Array<out Type>): ElementsContainer =
+    override fun initElementsContainer(driver: Driver, field: Field, self: WebElementSource, type: Class<*>, genericTypes: Array<out Type>): Container =
         super.initElementsContainer(driver, field, self, field.evictCache(type), genericTypes)
 
     override fun isDecoratableList(field: Field, genericTypes: Array<out Type>, type: Class<*>): Boolean {

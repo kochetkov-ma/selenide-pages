@@ -1,6 +1,6 @@
 dependencies {
     testImplementation project(":selenide-pages-core")
-    testImplementation "org.junit.jupiter:junit-jupiter:5.9.1"
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.9.2'
 }
 
 def allureVersion = libs.versions.allure.get() as String
