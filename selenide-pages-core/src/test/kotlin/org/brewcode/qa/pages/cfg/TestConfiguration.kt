@@ -50,8 +50,8 @@ object TestConfiguration : AbstractProjectConfig() {
     lateinit var pages: Pages
 
     override fun listeners() = buildList {
-        add(container.perProject(alias))
-        if (isCI) add(browser.perProject("chrome"))
+        add(container.perProject())
+        if (isCI) add(browser.perProject())
     }
 
     override fun beforeAll() {

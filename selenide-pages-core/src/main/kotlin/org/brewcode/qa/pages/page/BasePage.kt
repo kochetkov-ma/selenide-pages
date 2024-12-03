@@ -3,12 +3,12 @@ package org.brewcode.qa.pages.page
 import com.codeborne.selenide.Condition
 import com.codeborne.selenide.Modal
 import com.codeborne.selenide.SelenideElement
+import io.github.oshai.kotlinlogging.KotlinLogging
 import io.kotest.assertions.asClue
 import io.kotest.inspectors.forAll
 import io.kotest.matchers.string.shouldContainIgnoringCase
 import io.kotest.matchers.string.shouldMatch
 import io.qameta.allure.Step
-import mu.KotlinLogging
 import org.awaitility.kotlin.await
 import org.brewcode.qa.pages.EMPTY
 import org.brewcode.qa.pages.annotation.Element

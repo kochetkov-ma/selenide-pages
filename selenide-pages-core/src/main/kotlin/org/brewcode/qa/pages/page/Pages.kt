@@ -4,7 +4,7 @@ import com.codeborne.selenide.Configuration
 import com.codeborne.selenide.ElementsContainer
 import com.codeborne.selenide.SelenideDriver
 import com.codeborne.selenide.SelenideElement
-import mu.KotlinLogging.logger
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.brewcode.qa.pages.annotation.Element
 import org.brewcode.qa.pages.annotation.Page
 import org.brewcode.qa.pages.page.PageDriver.PageDriverFactory.asPageDriver
@@ -164,7 +164,7 @@ data class Pages @JvmOverloads constructor(
             pageFactory: PagesSelenidePageFactory = PagesSelenidePageFactory()
         ) = Pages(selenideAsPageDriver(), pageBaseUrl, pageFactory)
 
-        private val log = logger {}
+        private val log = KotlinLogging.logger {}
         private val KProperty<*>.elementAnnotation get() = annotation<Element>()
         private inline fun <reified T : Annotation> KProperty<*>.elementAnnotationFromComponentClass() = javaField?.type?.kotlin?.findAnnotation<T>()
     }

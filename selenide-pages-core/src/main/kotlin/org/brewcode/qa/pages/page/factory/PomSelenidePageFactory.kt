@@ -7,7 +7,7 @@ import com.codeborne.selenide.ElementsContainer
 import com.codeborne.selenide.SelenideElement
 import com.codeborne.selenide.ex.PageObjectException
 import com.codeborne.selenide.impl.*
-import mu.KotlinLogging
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.brewcode.qa.pages.annotation.Element
 import org.brewcode.qa.pages.annotation.NotInit
 import org.brewcode.qa.pages.element.Blocks
@@ -137,10 +137,12 @@ open class PagesSelenidePageFactory : SelenidePageFactory() {
         when {
             field.isSelfElementsContainer -> if (searchContext != null && !field.isAnnotationPresent(NotInit::class.java))
                 ElementFinder.wrap(SelenideElement::class.java, searchContext) else null
+
             field.isWebElement -> ElementFinder.wrap(driver, searchContext, findSelector(), 0)
             field.isElementsCollection(genericTypes) -> ElementsCollection(BySelectorCollection(driver, searchContext, findSelector()))
             field.isGenericElementsContainer(genericTypes) -> field.cache(genericTypes)
                 .run { createElementsContainer(driver, searchContext, field, findSelector()) }
+
             field.isElementsContainer -> createElementsContainer(driver, searchContext, field, findSelector())
             field.isElementsContainerList(genericTypes) -> createElementsContainerList(driver, searchContext, field, genericTypes, findSelector())
             else -> defaultFieldDecorator(driver, searchContext).decorate(loader, field)

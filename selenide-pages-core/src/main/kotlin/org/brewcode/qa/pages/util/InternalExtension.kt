@@ -8,7 +8,7 @@ import kotlin.reflect.full.findAnnotation
 import kotlin.reflect.jvm.javaField
 
 internal object InternalExtension {
-    fun <T> T?.optional(): Optional<T> = Optional.ofNullable(this)
+    fun <T> T?.optional(): Optional<T & Any> = Optional.ofNullable(this)
 
     fun <T> T?.or(fallback: () -> T?): T? = this ?: fallback()
 
