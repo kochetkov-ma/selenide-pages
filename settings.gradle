@@ -6,32 +6,32 @@ dependencyResolutionManagement {
     versionCatalogs {
         libs {
             // PLUGIN //
-            plugin('kotlin', 'org.jetbrains.kotlin.jvm').version('1.9.0')
+            plugin('kotlin', 'org.jetbrains.kotlin.jvm').version('1.9.25')
             plugin('allure-gradle', 'io.qameta.allure').version('2.12.0')
             plugin('nexus', 'io.codearte.nexus-staging').version('0.30.0')
 
             // MAIN //
-            version('awaitility', '4.2.2')
+            version('awaitility', '4.3.0')
             library('awaitility', 'org.awaitility', 'awaitility').versionRef('awaitility')
             library('awaitility-kotlin', 'org.awaitility', 'awaitility-kotlin').versionRef('awaitility')
 
-            version('selenide', '6.19.1')
+            version('selenide', '7.7.3')
             library('selenide', 'com.codeborne', 'selenide').versionRef('selenide')
             library('selenide-core', 'com.codeborne', 'selenide-core').versionRef('selenide')
 
-            version('allure', '2.29.0')
+            version('allure', '2.29.1')
             library('allure', 'io.qameta.allure', 'allure-selenide').versionRef('allure')
             library('allure-api', 'io.qameta.allure', 'allure-java-commons').versionRef('allure')
 
-            library('geantyref', 'io.leangen.geantyref', 'geantyref').version('2.0.0')
+            library('geantyref', 'io.leangen.geantyref', 'geantyref').version('2.0.1')
 
-            library('slf4j', 'org.slf4j', 'slf4j-api').version('2.0.16')
-            library('logback', 'ch.qos.logback', 'logback-classic').version('1.5.12')
-            library('kotlin-logging', 'io.github.oshai', 'kotlin-logging-jvm').version('7.0.0')
+            library('slf4j', 'org.slf4j', 'slf4j-api').version('2.0.17')
+            library('logback', 'ch.qos.logback', 'logback-classic').version('1.5.18')
+            library('kotlin-logging', 'io.github.oshai', 'kotlin-logging-jvm').version('7.0.5')
 
             // TEST //
-            library('testcontainers', 'org.testcontainers', 'testcontainers-bom').version('1.20.4')
-            library('mockk', 'io.mockk', 'mockk').version('1.13.13')
+            library('testcontainers', 'org.testcontainers', 'testcontainers-bom').version('1.20.6')
+            library('mockk', 'io.mockk', 'mockk').version('1.13.17')
             version('kotest', '5.9.1')
             library('kotest-runner', 'io.kotest', 'kotest-runner-junit5').versionRef('kotest')
             library('kotest-assertions', 'io.kotest', 'kotest-assertions-core').versionRef('kotest')

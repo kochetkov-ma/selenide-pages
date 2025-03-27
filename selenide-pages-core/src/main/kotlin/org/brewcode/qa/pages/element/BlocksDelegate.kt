@@ -2,7 +2,6 @@ package org.brewcode.qa.pages.element
 
 import com.codeborne.selenide.Driver
 import com.codeborne.selenide.ElementsCollection
-import com.codeborne.selenide.ElementsContainer
 import com.codeborne.selenide.impl.BySelectorCollection
 import com.codeborne.selenide.impl.ElementsContainerCollection
 import com.codeborne.selenide.impl.PageObjectFactory

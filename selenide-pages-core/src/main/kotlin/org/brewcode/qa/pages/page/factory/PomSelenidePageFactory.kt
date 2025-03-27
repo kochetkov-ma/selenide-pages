@@ -3,7 +3,6 @@ package org.brewcode.qa.pages.page.factory
 import com.codeborne.selenide.Container
 import com.codeborne.selenide.Driver
 import com.codeborne.selenide.ElementsCollection
-import com.codeborne.selenide.ElementsContainer
 import com.codeborne.selenide.SelenideElement
 import com.codeborne.selenide.ex.PageObjectException
 import com.codeborne.selenide.impl.*
@@ -12,6 +11,7 @@ import org.brewcode.qa.pages.annotation.Element
 import org.brewcode.qa.pages.annotation.NotInit
 import org.brewcode.qa.pages.element.Blocks
 import org.brewcode.qa.pages.element.BlocksDelegate
+import org.brewcode.qa.pages.element.ElementsContainer
 import org.brewcode.qa.pages.page.factory.PagesAnnotations.Companion.builder
 import org.brewcode.qa.pages.page.factory.PagesAnnotations.Companion.javaPageFactoryFinderAnnotation
 import org.brewcode.qa.pages.page.factory.PagesAnnotations.Companion.ktPageFactoryFinderAnnotations
@@ -108,7 +108,7 @@ open class PagesSelenidePageFactory : SelenidePageFactory() {
 
     private val Field.isContainer get() = ElementsCollection::class.java.isAssignableFrom(type)
 
-    private fun Field.isWebElementList(genericTypes: Array<out Type>) = isDecoratableList(this, genericTypes, WebElement::class.java)
+    private fun Field.isWebElementList(genericTypes: Array<out Type>) = isDecoratableList(this, null, genericTypes, WebElement::class.java)
 
     private fun Field.isElementsCollection(genericTypes: Array<out Type>) = isContainer or isWebElementList(genericTypes)
 
@@ -118,7 +118,7 @@ open class PagesSelenidePageFactory : SelenidePageFactory() {
         && genericTypes.first() is Class<*>
         && ElementsContainer::class.java.isAssignableFrom(genericTypes.first() as Class<*>)
 
-    private fun Field.isElementsContainerList(genericTypes: Array<out Type>) = isDecoratableList(this, genericTypes, ElementsContainer::class.java)
+    private fun Field.isElementsContainerList(genericTypes: Array<out Type>) = isDecoratableList(this, null, genericTypes, ElementsContainer::class.java)
 
     override fun decorate(
         loader: ClassLoader,
@@ -140,11 +140,11 @@ open class PagesSelenidePageFactory : SelenidePageFactory() {
 
             field.isWebElement -> ElementFinder.wrap(driver, searchContext, findSelector(), 0)
             field.isElementsCollection(genericTypes) -> ElementsCollection(BySelectorCollection(driver, searchContext, findSelector()))
+            field.isElementsContainerList(genericTypes) -> createElementsContainerList(driver, searchContext, field, genericTypes, findSelector())
             field.isGenericElementsContainer(genericTypes) -> field.cache(genericTypes)
                 .run { createElementsContainer(driver, searchContext, field, findSelector()) }
 
             field.isElementsContainer -> createElementsContainer(driver, searchContext, field, findSelector())
-            field.isElementsContainerList(genericTypes) -> createElementsContainerList(driver, searchContext, field, genericTypes, findSelector())
             else -> defaultFieldDecorator(driver, searchContext).decorate(loader, field)
         }
             .also { it?.addAlias(field) }
@@ -154,7 +154,7 @@ open class PagesSelenidePageFactory : SelenidePageFactory() {
     override fun initElementsContainer(driver: Driver, field: Field, self: WebElementSource, type: Class<*>, genericTypes: Array<out Type>): Container =
         super.initElementsContainer(driver, field, self, field.evictCache(type), genericTypes)
 
-    override fun isDecoratableList(field: Field, genericTypes: Array<out Type>, type: Class<*>): Boolean {
+    override fun isDecoratableList(field: Field, selector: By?, genericTypes: Array<out Type>, type: Class<*>): Boolean {
         if (!Collection::class.java.isAssignableFrom(field.type)) return false
 
         val listType = getListGenericType(field, genericTypes)
@@ -200,7 +200,10 @@ open class PagesSelenidePageFactory : SelenidePageFactory() {
         }
     }
 
-    private fun Field.isNotInitializedYetOnPage(page: Any) = !isInitialized(page, this)
+    private fun Field.isNotInitializedYetOnPage(page: Any) = when (getFieldValue(page, this)) {
+        null -> true
+        else -> false
+    }
 
     internal companion object PagesSelenidePageFactoryUtil {
         internal val INSTANCE = PagesSelenidePageFactory()

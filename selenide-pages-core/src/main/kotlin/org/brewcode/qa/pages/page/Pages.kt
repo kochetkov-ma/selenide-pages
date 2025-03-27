@@ -1,12 +1,12 @@
 package org.brewcode.qa.pages.page
 
 import com.codeborne.selenide.Configuration
-import com.codeborne.selenide.ElementsContainer
 import com.codeborne.selenide.SelenideDriver
 import com.codeborne.selenide.SelenideElement
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.brewcode.qa.pages.annotation.Element
 import org.brewcode.qa.pages.annotation.Page
+import org.brewcode.qa.pages.element.ElementsContainer
 import org.brewcode.qa.pages.page.PageDriver.PageDriverFactory.asPageDriver
 import org.brewcode.qa.pages.page.PageDriver.PageDriverFactory.selenideAsPageDriver
 import org.brewcode.qa.pages.page.Pages.PagesFactory

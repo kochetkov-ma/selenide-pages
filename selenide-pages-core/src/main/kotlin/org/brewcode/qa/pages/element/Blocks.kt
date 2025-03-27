@@ -2,7 +2,6 @@ package org.brewcode.qa.pages.element
 
 import com.codeborne.selenide.Container
 import com.codeborne.selenide.ElementsCollection
-import com.codeborne.selenide.ElementsContainer
 import org.brewcode.qa.pages.annotation.NotInit
 import org.brewcode.qa.pages.element.BlocksDelegate.Companion.wrap
 
