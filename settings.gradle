@@ -11,7 +11,7 @@ dependencyResolutionManagement {
             plugin('nexus', 'io.codearte.nexus-staging').version('0.30.0')
 
             // MAIN //
-            version('awaitility', '4.3.0')
+            version('awaitility', '4.2.2')
             library('awaitility', 'org.awaitility', 'awaitility').versionRef('awaitility')
             library('awaitility-kotlin', 'org.awaitility', 'awaitility-kotlin').versionRef('awaitility')
 
