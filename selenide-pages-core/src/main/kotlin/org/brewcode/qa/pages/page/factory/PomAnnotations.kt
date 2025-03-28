@@ -1,6 +1,6 @@
 package org.brewcode.qa.pages.page.factory
 
-import mu.KotlinLogging.logger
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.brewcode.qa.pages.annotation.Element
 import org.brewcode.qa.pages.util.InternalExtension.optional
 import org.brewcode.qa.pages.util.InternalExtension.or
@@ -38,7 +38,7 @@ internal class PagesAnnotations(field: Field?) : Annotations(field) {
     }
 
     internal companion object {
-        private val log = logger {}
+        private val log = KotlinLogging.logger {}
 
         val Field.elementAnnotationFromContainerClass: Element?
             get() =

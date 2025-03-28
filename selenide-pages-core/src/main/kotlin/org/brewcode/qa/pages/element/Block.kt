@@ -1,6 +1,5 @@
 package org.brewcode.qa.pages.element
 
-import com.codeborne.selenide.ElementsContainer
 
 /**
  * Alias of [ElementsContainer].

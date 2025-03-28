@@ -1,42 +1,42 @@
 rootProject.name = 'selenide-pages'
 
-enableFeaturePreview('VERSION_CATALOGS')
+//enableFeaturePreview('VERSION_CATALOGS')
 
 dependencyResolutionManagement {
     versionCatalogs {
         libs {
             // PLUGIN //
-            alias('kotlin').toPluginId('org.jetbrains.kotlin.jvm').version('1.7.21')
-            alias('allure-gradle').toPluginId('io.qameta.allure').version('2.11.2')
-            alias('nexus').toPluginId('io.codearte.nexus-staging').version('0.30.0')
+            plugin('kotlin', 'org.jetbrains.kotlin.jvm').version('1.9.25')
+            plugin('allure-gradle', 'io.qameta.allure').version('2.12.0')
+            plugin('nexus', 'io.codearte.nexus-staging').version('0.30.0')
 
             // MAIN //
-            version('awaitility', '4.2.0')
-            alias('awaitility').to('org.awaitility', 'awaitility').versionRef('awaitility')
-            alias('awaitility-kotlin').to('org.awaitility', 'awaitility-kotlin').versionRef('awaitility')
+            version('awaitility', '4.2.2')
+            library('awaitility', 'org.awaitility', 'awaitility').versionRef('awaitility')
+            library('awaitility-kotlin', 'org.awaitility', 'awaitility-kotlin').versionRef('awaitility')
 
-            version('selenide', '6.19.1')
-            alias('selenide').to('com.codeborne', 'selenide').versionRef('selenide')
-            alias('selenide-core').to('com.codeborne', 'selenide-core').versionRef('selenide')
+            version('selenide', '7.7.3')
+            library('selenide', 'com.codeborne', 'selenide').versionRef('selenide')
+            library('selenide-core', 'com.codeborne', 'selenide-core').versionRef('selenide')
 
-            version('allure', '2.20.1')
-            alias('allure').to('io.qameta.allure', 'allure-selenide').versionRef('allure')
-            alias('allure-api').to('io.qameta.allure', 'allure-java-commons').versionRef('allure')
+            version('allure', '2.29.1')
+            library('allure', 'io.qameta.allure', 'allure-selenide').versionRef('allure')
+            library('allure-api', 'io.qameta.allure', 'allure-java-commons').versionRef('allure')
 
-            alias('geantyref').to('io.leangen.geantyref', 'geantyref').version('1.3.13')
+            library('geantyref', 'io.leangen.geantyref', 'geantyref').version('2.0.1')
 
-            alias('slf4j').to('org.slf4j', 'slf4j-api').version('2.0.3')
-            alias('logback').to('ch.qos.logback', 'logback-classic').version('1.4.4')
-            alias('kotlin-logging').to('io.github.microutils', 'kotlin-logging-jvm').version('3.0.4')
+            library('slf4j', 'org.slf4j', 'slf4j-api').version('2.0.17')
+            library('logback', 'ch.qos.logback', 'logback-classic').version('1.5.18')
+            library('kotlin-logging', 'io.github.oshai', 'kotlin-logging-jvm').version('7.0.5')
 
             // TEST //
-            alias('testcontainers').to('org.testcontainers', 'testcontainers-bom').version('1.17.5')
-            alias('mockk').to('io.mockk', 'mockk').version('1.13.2')
-            version('kotest', '5.5.4')
-            alias('kotest-runner').to('io.kotest', 'kotest-runner-junit5').versionRef('kotest')
-            alias('kotest-assertions').to('io.kotest', 'kotest-assertions-core').versionRef('kotest')
-            alias('kotest-containers').to('io.kotest.extensions', 'kotest-extensions-testcontainers').version('1.3.4')
-            alias('kotest-allure').to('ru.iopump.kotest', 'kotest-allure').version('5.4.1')
+            library('testcontainers', 'org.testcontainers', 'testcontainers-bom').version('1.20.6')
+            library('mockk', 'io.mockk', 'mockk').version('1.13.17')
+            version('kotest', '5.9.1')
+            library('kotest-runner', 'io.kotest', 'kotest-runner-junit5').versionRef('kotest')
+            library('kotest-assertions', 'io.kotest', 'kotest-assertions-core').versionRef('kotest')
+            library('kotest-containers', 'io.kotest.extensions', 'kotest-extensions-testcontainers').version('2.0.2')
+            library('kotest-allure', 'ru.iopump.kotest', 'kotest-allure').version('5.6.2')
         }
     }
 }

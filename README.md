@@ -11,7 +11,7 @@ your app [Page Objects](https://www.selenium.dev/documentation/guidelines/page_o
 
 - Quickly creating a convenient, extensible PageObject hierarchy based on Selenide.
 - Additional functionality for working with a page and organizing elements structure.
-- Kotlin DSL for Page Object, and fully compatible with Java 11
+- Kotlin DSL for Page Object, and fully compatible with Java 17
 - Cucumber steps for using Page Objects
 
 ## Modules
