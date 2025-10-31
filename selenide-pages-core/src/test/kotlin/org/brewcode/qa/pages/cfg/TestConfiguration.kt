@@ -2,6 +2,7 @@ package org.brewcode.qa.pages.cfg
 
 import com.codeborne.selenide.Configuration
 import io.kotest.core.config.AbstractProjectConfig
+import io.kotest.engine.concurrency.TestExecutionMode
 import io.kotest.extensions.testcontainers.perProject
 import io.kotest.mpp.env
 import org.brewcode.qa.pages.page.Pages
@@ -13,11 +14,12 @@ import org.testcontainers.containers.BrowserWebDriverContainer
 import org.testcontainers.containers.GenericContainer
 import org.testcontainers.containers.Network
 import org.testcontainers.utility.DockerImageName
+import ru.iopump.kotest.allure.KotestAllureListener
 
 @Suppress("HttpUrlsUsage")
 object TestConfiguration : AbstractProjectConfig() {
 
-    override val parallelism: Int = 4
+    override val testExecutionMode = TestExecutionMode.LimitedConcurrency(4)
 
     private var testNetwork: Network = Network.newNetwork()
 
@@ -49,12 +51,16 @@ object TestConfiguration : AbstractProjectConfig() {
 
     lateinit var pages: Pages
 
-    override fun listeners() = buildList {
+    private val isCI = env("CI") != null
+    private val isNotCI = !isCI
+
+    override val extensions = buildList {
+        add(KotestAllureListener)
         add(container.perProject())
         if (isCI) add(browser.perProject())
     }
 
-    override fun beforeAll() {
+    init {
         Configuration.baseUrl = "http://" + when {
             container.isCreated and isNotCI -> container.host + ":" + container.firstMappedPort
             container.isCreated and isCI -> alias
@@ -67,7 +73,4 @@ object TestConfiguration : AbstractProjectConfig() {
 
         pages = Pages.createWithStaticSelenideDriver()
     }
-
-    private val isCI = env("CI") != null
-    private val isNotCI = !isCI
 }

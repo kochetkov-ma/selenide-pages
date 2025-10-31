@@ -9,7 +9,7 @@ import org.brewcode.qa.pages.annotation.Page
 import org.brewcode.qa.pages.element.Block
 import org.brewcode.qa.pages.element.Blocks
 import org.brewcode.qa.pages.page.BasePage
-import java.util.*
+import java.util.Optional
 
 /**
  * Page Object для Docker 'getting-started'

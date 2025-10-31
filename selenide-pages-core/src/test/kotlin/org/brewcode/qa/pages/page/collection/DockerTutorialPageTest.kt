@@ -2,7 +2,7 @@ package org.brewcode.qa.pages.page.collection
 
 import com.codeborne.selenide.CollectionCondition
 import com.codeborne.selenide.Condition
-import com.codeborne.selenide.Selenide
+import com.codeborne.selenide.Selenide.executeJavaScript
 import io.kotest.core.spec.style.FreeSpec
 import io.kotest.matchers.booleans.shouldBeTrue
 import org.brewcode.qa.pages.cfg.TestConfiguration
@@ -20,8 +20,8 @@ open class DockerTutorialPageTest : FreeSpec() {
                 tutorialPage = pages.page<DockerTutorialPage>()
                     .open()
                     .verify()
-                Selenide.executeJavaScript<Any?>("console.error('Error message')")
-                Selenide.executeJavaScript<Any?>("console.log('Info message')")
+                executeJavaScript<Any>("console.error('Error message')")
+                executeJavaScript<Any>("console.log('Info message')")
             }
 
             "на странице отсутствуют несуществующие элементы" {

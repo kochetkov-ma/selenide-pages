@@ -5,7 +5,11 @@ import com.codeborne.selenide.Driver
 import com.codeborne.selenide.ElementsCollection
 import com.codeborne.selenide.SelenideElement
 import com.codeborne.selenide.ex.PageObjectException
-import com.codeborne.selenide.impl.*
+import com.codeborne.selenide.impl.BySelectorCollection
+import com.codeborne.selenide.impl.ElementFinder
+import com.codeborne.selenide.impl.SelenidePageFactory
+import com.codeborne.selenide.impl.WebElementSource
+import com.codeborne.selenide.impl.WebElementWrapper
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.brewcode.qa.pages.annotation.Element
 import org.brewcode.qa.pages.annotation.NotInit
@@ -150,6 +154,8 @@ open class PagesSelenidePageFactory : SelenidePageFactory() {
             .also { it?.addAlias(field) }
             .also { log.trace { "Finish decorating field '$field' with locator '$thisSelector' and genericTypes '$genericTypesInfo'. Element: '${it.cls}'" } }
     }
+
+    override fun <PageObjectClass : Any, T : PageObjectClass> page(driver: Driver, pageObject: T): PageObjectClass = super.page(driver, pageObject)
 
     override fun initElementsContainer(driver: Driver, field: Field, self: WebElementSource, type: Class<*>, genericTypes: Array<out Type>): Container =
         super.initElementsContainer(driver, field, self, field.evictCache(type), genericTypes)

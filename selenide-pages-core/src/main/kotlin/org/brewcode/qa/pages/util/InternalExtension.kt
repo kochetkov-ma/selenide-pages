@@ -1,7 +1,7 @@
 package org.brewcode.qa.pages.util
 
 import java.time.Duration
-import java.util.*
+import java.util.Optional
 import kotlin.reflect.KProperty
 import kotlin.reflect.KProperty1
 import kotlin.reflect.full.findAnnotation

@@ -27,7 +27,12 @@ dependencies {
     //// IMPL ////
     implementation(libs.allure) { transitive = false }
 
-    testImplementation 'org.testcontainers:selenium'
+    testImplementation 'org.testcontainers:testcontainers-selenium'
+    testImplementation 'io.kotest:kotest-mpp'
+}
+
+test {
+    systemProperty("kotest.framework.config.fqn", "org.brewcode.qa.pages.cfg.TestConfiguration")
 }
 
 allure {

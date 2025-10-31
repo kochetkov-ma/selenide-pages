@@ -1,7 +1,11 @@
 package org.brewcode.qa.pages.page
 
-import com.codeborne.selenide.*
-import org.brewcode.qa.pages.page.PageDriver.PageDriverFactory
+import com.codeborne.selenide.Config
+import com.codeborne.selenide.Configuration
+import com.codeborne.selenide.Driver
+import com.codeborne.selenide.Selenide
+import com.codeborne.selenide.SelenideDriver
+import com.codeborne.selenide.WebDriverRunner
 import java.net.URL
 
 /**
@@ -108,7 +112,7 @@ interface PageDriver {
 
             override fun open(absoluteUrl: URL) = Selenide.open(absoluteUrl)
 
-            override fun url(): String = WebDriverRunner.url()
+            override fun url(): String = WebDriverRunner.url().orEmpty()
 
             override fun title(): String? = Selenide.title()
 

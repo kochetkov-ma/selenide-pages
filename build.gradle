@@ -1,3 +1,5 @@
+import static org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17
+
 // file:noinspection GroovyAssignabilityCheck
 
 plugins {
@@ -34,17 +36,17 @@ subprojects {
     }
 
     tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
-        kotlinOptions {
+        compilerOptions {
             freeCompilerArgs = ['-Xjsr305=strict']
             suppressWarnings = true
-            jvmTarget = JavaVersion.VERSION_17.majorVersion
+            jvmTarget = JVM_17
         }
     }
 
     tasks.withType(Test) {
         useJUnitPlatform()
         systemProperties["kotest.listener.spring.ignore.warning"] = true
-        systemProperties["gradle.build.dir"] = buildDir
+        systemProperties["gradle.build.dir"] = layout.buildDirectory.get().toString()
     }
 
     dependencies {
@@ -54,6 +56,7 @@ subprojects {
         api libs.awaitility
         api(libs.awaitility.kotlin) { transitive = false }
         api libs.kotest.assertions
+        api libs.kotest.engine
 
         /* Logging API*/
         api libs.slf4j
@@ -66,6 +69,7 @@ subprojects {
         testImplementation libs.mockk
         testImplementation libs.kotest.runner
         testImplementation libs.kotest.containers
+        testImplementation libs.kotest.mpp
         testImplementation(platform(libs.testcontainers))
     }
 }

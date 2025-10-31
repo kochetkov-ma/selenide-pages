@@ -9,7 +9,6 @@ import org.brewcode.qa.pages.annotation.Page
 import org.brewcode.qa.pages.element.ElementsContainer
 import org.brewcode.qa.pages.page.PageDriver.PageDriverFactory.asPageDriver
 import org.brewcode.qa.pages.page.PageDriver.PageDriverFactory.selenideAsPageDriver
-import org.brewcode.qa.pages.page.Pages.PagesFactory
 import org.brewcode.qa.pages.page.factory.PagesSelenidePageFactory
 import org.brewcode.qa.pages.util.InternalExtension.annotation
 import org.brewcode.qa.pages.util.InternalExtension.optional
