@@ -14,7 +14,6 @@ import org.testcontainers.containers.BrowserWebDriverContainer
 import org.testcontainers.containers.GenericContainer
 import org.testcontainers.containers.Network
 import org.testcontainers.utility.DockerImageName
-import ru.iopump.kotest.allure.KotestAllureListener
 
 @Suppress("HttpUrlsUsage")
 object TestConfiguration : AbstractProjectConfig() {
@@ -55,7 +54,8 @@ object TestConfiguration : AbstractProjectConfig() {
     private val isNotCI = !isCI
 
     override val extensions = buildList {
-        add(KotestAllureListener)
+        // todo Activate when ru.iopump.kotest:kotest-allure:6.0.3 is available
+        //        add(KotestAllureListener)
         add(container.perProject())
         if (isCI) add(browser.perProject())
     }

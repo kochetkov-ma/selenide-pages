@@ -65,7 +65,8 @@ subprojects {
         runtimeOnly libs.logback
 
         // TEST //
-        testImplementation libs.kotest.allure
+        // todo Activate when ru.iopump.kotest:kotest-allure:6.0.3 is available
+//        testImplementation libs.kotest.allure
         testImplementation libs.mockk
         testImplementation libs.kotest.runner
         testImplementation libs.kotest.containers
