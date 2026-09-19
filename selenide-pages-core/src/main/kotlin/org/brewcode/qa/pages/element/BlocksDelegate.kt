@@ -16,15 +16,15 @@ internal class BlocksDelegate(
     driver: Driver,
     parent: WebElementSource?,
     field: Field,
-    listType: Class<*>,
+    listType: Class<ElementsContainer>,
     genericTypes: Array<out Type>,
     selector: By,
     alias: String = "-",
-) : ElementsContainerCollection(pageFactory, driver, field, listType, genericTypes, BySelectorCollection(driver, parent, selector)) {
+) : ElementsContainerCollection<ElementsContainer>(pageFactory, driver, field, listType, genericTypes, BySelectorCollection(driver, parent, selector)) {
 
     internal companion object {
         @Suppress("UNCHECKED_CAST")
-        internal fun <T : ElementsContainer> ElementsContainerCollection.wrap(): MutableList<T> = this as MutableList<T>
+        internal fun <T : ElementsContainer> ElementsContainerCollection<*>.wrap(): MutableList<T> = this as MutableList<T>
     }
 
     @NotInit

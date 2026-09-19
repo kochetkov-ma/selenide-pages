@@ -17,6 +17,7 @@ ajcore.*.txt
 
 # Package Files #
 *.jar
+!gradle/wrapper/gradle-wrapper.jar
 *.war
 *.nar
 *.ear
@@ -31,9 +32,6 @@ hs_err_pid*
 .gradle/
 build/
 keys/
-gradlew
-gradlew.bat
-gradle-wrapper.jar
 
 # Allure
 .allure/
@@ -41,3 +39,11 @@ allure-results/
 
 # Private
 .gpg/
+.secrets/
+
+# Local agent setup and task state
+AGENTS.md
+CLAUDE.md
+.codex/
+.claude/
+.agents/

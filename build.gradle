@@ -1,14 +1,12 @@
-// file:noinspection GroovyAssignabilityCheck
-
 plugins {
     id 'idea'
-    id "com.github.ben-manes.versions" version '0.44.0'
-    alias(libs.plugins.nexus)
+    id 'io.github.ben-manes.versions' version '0.64.0'
+    id 'com.vanniktech.maven.publish' version '0.37.0' apply false
     alias(libs.plugins.kotlin) apply false
     alias(libs.plugins.allure.gradle) apply false
 }
 
-wrapper { distributionType = Wrapper.DistributionType.ALL; gradleVersion = gradleWrapperVersion }
+wrapper { distributionType = Wrapper.DistributionType.BIN; gradleVersion = gradleWrapperVersion }
 
 def isNonStable = { String version ->
     def stableKeyword = ['RELEASE', 'FINAL', 'GA'].any { it -> version.toUpperCase().contains(it) }
@@ -23,58 +21,46 @@ tasks.named("dependencyUpdates").configure {
 }
 
 subprojects {
-    apply plugin: 'kotlin'
+    apply plugin: 'org.jetbrains.kotlin.jvm'
     apply plugin: 'io.qameta.allure'
 
-    repositories { mavenLocal(); mavenCentral() }
+    repositories { mavenCentral() }
 
     java {
         targetCompatibility = JavaVersion.VERSION_17
         sourceCompatibility = JavaVersion.VERSION_17
     }
 
+    tasks.withType(JavaCompile).configureEach {
+        options.release = 17
+    }
+
     tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
-        kotlinOptions {
-            freeCompilerArgs = ['-Xjsr305=strict']
-            suppressWarnings = true
-            jvmTarget = JavaVersion.VERSION_17.majorVersion
+        compilerOptions {
+            freeCompilerArgs.add('-Xjsr305=strict')
+            freeCompilerArgs.add('-Xjdk-release=17')
+            jvmTarget = org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17
         }
     }
 
     tasks.withType(Test) {
         useJUnitPlatform()
         systemProperties["kotest.listener.spring.ignore.warning"] = true
-        systemProperties["gradle.build.dir"] = buildDir
+        systemProperties['gradle.build.dir'] = layout.buildDirectory.get().asFile.absolutePath
     }
 
     dependencies {
-        // MAIN //
         api 'org.jetbrains.kotlin:kotlin-reflect'
-        api 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
         api libs.awaitility
         api(libs.awaitility.kotlin) { transitive = false }
         api libs.kotest.assertions
 
-        /* Logging API*/
         api libs.slf4j
         api libs.kotlin.logging
-        /* Logging IMPL*/
         runtimeOnly libs.logback
 
-        // TEST //
-        testImplementation libs.kotest.allure
         testImplementation libs.mockk
         testImplementation libs.kotest.runner
-        testImplementation libs.kotest.containers
         testImplementation(platform(libs.testcontainers))
     }
-}
-
-nexusStaging {
-    packageGroup = "org.brewcode"
-    numberOfRetries = 50
-    delayBetweenRetriesInMillis = 5000
-    serverUrl = "https://s01.oss.sonatype.org/service/local/"
-    username = project.findProperty('ossrhUsername') ?: ''
-    password = project.findProperty('ossrhPassword') ?: ''
 }

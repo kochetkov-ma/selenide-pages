@@ -15,7 +15,7 @@ import java.lang.reflect.Field
 import kotlin.reflect.full.findAnnotation
 import kotlin.reflect.full.primaryConstructor
 
-internal class PagesAnnotations(field: Field?) : Annotations(field) {
+internal class PagesAnnotations(field: Field) : Annotations(field) {
 
     override fun buildBy(): By {
         assertValidAnnotations()
@@ -45,6 +45,8 @@ internal class PagesAnnotations(field: Field?) : Annotations(field) {
                 type.getAnnotationsByType(Element::class.java).firstOrNull()
         val Annotation.ktPageFactoryFinderAnnotations get() = annotationClass.findAnnotation<PageFactoryFinder>()
         val Annotation.javaPageFactoryFinderAnnotation: PageFactoryFinder? get() = this::class.java.getAnnotation(PageFactoryFinder::class.java)
-        val PageFactoryFinder.builder: AbstractFindByBuilder get() = value.primaryConstructor?.call() as AbstractFindByBuilder
+        @Suppress("UNCHECKED_CAST")
+        val PageFactoryFinder.builder: AbstractFindByBuilder<Annotation>
+            get() = value.primaryConstructor?.call() as AbstractFindByBuilder<Annotation>
     }
 }

@@ -1,8 +1,7 @@
-version: '3.8'
-
 services:
   sample:
-    image: docker/getting-started:latest
-    container_name: get-started
+    image: docker/getting-started@sha256:d79336f4812b6547a53e735480dde67f8f8f7071b414fbd9297609ffb989abc1
     ports:
-      - "80:80"
+      - "127.0.0.1:80:80"
+    mem_limit: 256m
+    cpus: 1.0

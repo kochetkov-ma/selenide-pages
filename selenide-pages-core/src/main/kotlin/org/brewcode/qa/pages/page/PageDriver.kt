@@ -108,7 +108,7 @@ interface PageDriver {
 
             override fun open(absoluteUrl: URL) = Selenide.open(absoluteUrl)
 
-            override fun url(): String = WebDriverRunner.url()
+            override fun url(): String = WebDriverRunner.url().orEmpty()
 
             override fun title(): String? = Selenide.title()
 

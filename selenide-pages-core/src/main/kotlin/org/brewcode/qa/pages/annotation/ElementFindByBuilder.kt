@@ -12,10 +12,9 @@ import org.openqa.selenium.support.pagefactory.ByChained
 import java.lang.reflect.Field
 import kotlin.reflect.full.declaredMemberFunctions
 
-internal class ElementFindByBuilder : AbstractFindByBuilder() {
+internal class ElementFindByBuilder : AbstractFindByBuilder<Element>() {
 
-    override fun buildIt(annotation: Any, field: Field?): By {
-        require(annotation is Element) { "Something went wrong with @Element, it turned out as '$annotation' in '$field'" }
+    override fun buildIt(annotation: Element, field: Field?): By {
 
         val findBys = annotation.findBys
         val findAll = annotation.findAll
@@ -27,7 +26,7 @@ internal class ElementFindByBuilder : AbstractFindByBuilder() {
         return when {
             findBys.isNotEmpty() -> multipleBuildIt(findBys, CHAIN)
 
-            findAll.isNotEmpty() -> multipleBuildIt(findBys, ALL)
+            findAll.isNotEmpty() -> multipleBuildIt(findAll, ALL)
 
             else -> annotation.toFinBy().let {
                 buildByFromShortFindBy(it)

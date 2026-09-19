@@ -1,13 +1,14 @@
 dependencies {
     testImplementation project(":selenide-pages-core")
-    testImplementation 'org.junit.jupiter:junit-jupiter:5.9.2'
+    testImplementation libs.junit.jupiter
+    testImplementation 'org.testcontainers:testcontainers'
 }
 
 def allureVersion = libs.versions.allure.get() as String
 allure {
     adapter {
         allureJavaVersion = allureVersion
-        aspectjVersion = "1.9.9.1"
+        aspectjVersion = '1.9.25'
         aspectjWeaver = true
 
         frameworks { junit5 { enabled = false } }

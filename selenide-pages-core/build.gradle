@@ -3,22 +3,15 @@ ext.description = 'Framework based on Selenide provided convenient functional to
 
 apply from: "$rootDir/gradle/publishing.gradle"
 
+test {
+    systemProperty 'kotest.framework.config.fqn', 'org.brewcode.qa.pages.cfg.TestConfiguration'
+}
+
 dependencies {
     //// API ////
     api libs.geantyref
     api(libs.selenide) {
-        ['selenium-devtools-v85',
-         'selenium-devtools-v93',
-         'selenium-devtools-v94',
-         'selenium-devtools-v95',
-         'selenium-firefox-driver',
-         'selenium-edge-driver',
-         'selenium-firefox-xpi-driver',
-         'selenium-ie-driver',
-         'selenium-opera-driver',
-         'selenium-safari-driver',
-         'selenium-edge-driver'
-        ].forEach { exclude module: it }
+        exclude group: 'org.seleniumhq.selenium', module: 'selenium-ie-driver'
     }
     api(libs.allure.api) {
         exclude group: 'org.slf4j'
@@ -27,13 +20,13 @@ dependencies {
     //// IMPL ////
     implementation(libs.allure) { transitive = false }
 
-    testImplementation 'org.testcontainers:selenium'
+    testImplementation 'org.testcontainers:testcontainers'
 }
 
 allure {
     adapter {
         allureJavaVersion = libs.versions.allure.get()
-        aspectjVersion = "1.9.8.RC3"
+        aspectjVersion = '1.9.25'
         aspectjWeaver = true
 
         frameworks { junit5 { enabled = false } }

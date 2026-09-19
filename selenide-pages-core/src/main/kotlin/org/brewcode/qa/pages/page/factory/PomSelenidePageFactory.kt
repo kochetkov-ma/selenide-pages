@@ -69,7 +69,8 @@ open class PagesSelenidePageFactory : SelenidePageFactory() {
     ): MutableList<ElementsContainer> {
         val listType = getListGenericType(field, genericTypes) ?: throw IllegalArgumentException("Cannot detect list type for $field")
 
-        return Blocks(BlocksDelegate(this, driver, searchContext, field, listType, genericTypes, selector))
+        @Suppress("UNCHECKED_CAST")
+        return Blocks(BlocksDelegate(this, driver, searchContext, field, listType as Class<ElementsContainer>, genericTypes, selector))
     }
 
     private fun Any.addAlias(field: Field) {
@@ -151,8 +152,8 @@ open class PagesSelenidePageFactory : SelenidePageFactory() {
             .also { log.trace { "Finish decorating field '$field' with locator '$thisSelector' and genericTypes '$genericTypesInfo'. Element: '${it.cls}'" } }
     }
 
-    override fun initElementsContainer(driver: Driver, field: Field, self: WebElementSource, type: Class<*>, genericTypes: Array<out Type>): Container =
-        super.initElementsContainer(driver, field, self, field.evictCache(type), genericTypes)
+    override fun initElementsContainer(driver: Driver, field: Field?, self: WebElementSource, type: Class<*>, genericTypes: Array<out Type>): Container =
+        super.initElementsContainer(driver, field, self, field?.evictCache(type) ?: type, genericTypes)
 
     override fun isDecoratableList(field: Field, selector: By?, genericTypes: Array<out Type>, type: Class<*>): Boolean {
         if (!Collection::class.java.isAssignableFrom(field.type)) return false
@@ -216,7 +217,7 @@ open class PagesSelenidePageFactory : SelenidePageFactory() {
         private val KProperty<*>.elementAnnotation get() = annotation<Element>()
         private val Field.elementAnnotationFromComponentClass: Element? get() = type.getAnnotationsByType(Element::class.java).firstOrNull()
         private val EMPTY_BY = object : By() {
-            override fun findElements(context: SearchContext?): MutableList<WebElement> = mutableListOf()
+            override fun findElements(context: SearchContext): MutableList<WebElement> = mutableListOf()
             override fun toString(): String = "Empty By"
         }
     }
