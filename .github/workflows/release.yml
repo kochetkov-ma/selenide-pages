@@ -61,6 +61,14 @@ jobs:
         env:
           RELEASE_VERSION: ${{ steps.version.outputs.version }}
         run: ./gradlew clean build --no-daemon "-Pversion=$RELEASE_VERSION"
+      - name: Verify signed local publication
+        env:
+          ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.GPG_SIGNING_KEY }}
+          ORG_GRADLE_PROJECT_signingInMemoryKeyPassword: ${{ secrets.GPG_SIGNING_PASSWORD }}
+          RELEASE_VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          ./gradlew :selenide-pages-core:publishToMavenLocal :selenide-pages-core:signMavenPublication --no-daemon "-Pversion=$RELEASE_VERSION"
+          python3 .github/scripts/verify-publication.py "$RELEASE_VERSION"
       - name: Upload deployment for Central Portal validation
         if: github.event_name == 'workflow_dispatch'
         env:
