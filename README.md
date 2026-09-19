@@ -136,7 +136,7 @@ public class FunctionalTest {
 
 ## Support
 
-- Create an issue on [GitHub selenide-pages](https://github.com/kochetkov-ma/selenide-pages)
+- Open a [GitHub issue](https://github.com/kochetkov-ma/selenide-pages/issues) for support.
 
 **Maksim Kochetkov** - [apmatypa88@gmail.com](mailto:apmatypa88@gmail.com)
 
@@ -146,7 +146,7 @@ See [publishing instructions](docs/publishing.md) for validation and releases.
 
 ## Contributing
 
-Open a [GitHub issue](https://github.com/kochetkov-ma/selenide-pages/issues) to discuss a change.
+Development takes place in the [GitHub repository](https://github.com/kochetkov-ma/selenide-pages) on `main`. Discuss changes in an [issue](https://github.com/kochetkov-ma/selenide-pages/issues), then open a [pull request](https://github.com/kochetkov-ma/selenide-pages/pulls) against `main`.
 
 ## Authors and acknowledgment
 
