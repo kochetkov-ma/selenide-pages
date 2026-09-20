@@ -8,7 +8,6 @@ dependencyResolutionManagement {
             // PLUGIN //
             plugin('kotlin', 'org.jetbrains.kotlin.jvm').version('1.9.25')
             plugin('allure-gradle', 'io.qameta.allure').version('2.12.0')
-            plugin('nexus', 'io.codearte.nexus-staging').version('0.30.0')
 
             // MAIN //
             version('awaitility', '4.2.2')
@@ -30,17 +29,15 @@ dependencyResolutionManagement {
             library('kotlin-logging', 'io.github.oshai', 'kotlin-logging-jvm').version('7.0.5')
 
             // TEST //
-            library('testcontainers', 'org.testcontainers', 'testcontainers-bom').version('1.20.6')
+            library('testcontainers', 'org.testcontainers', 'testcontainers-bom').version('2.0.5')
             library('mockk', 'io.mockk', 'mockk').version('1.13.17')
             version('kotest', '5.9.1')
             library('kotest-runner', 'io.kotest', 'kotest-runner-junit5').versionRef('kotest')
             library('kotest-assertions', 'io.kotest', 'kotest-assertions-core').versionRef('kotest')
-            library('kotest-containers', 'io.kotest.extensions', 'kotest-extensions-testcontainers').version('2.0.2')
             library('kotest-allure', 'ru.iopump.kotest', 'kotest-allure').version('5.6.2')
         }
     }
 }
 
 include 'selenide-pages-core'
-include 'selenide-pages-cucumber'
 include 'selenide-pages-sample'

@@ -1,94 +1,42 @@
-////// make release //////
-apply plugin: 'signing'
-apply plugin: 'maven-publish'
+apply plugin: 'com.vanniktech.maven.publish'
 
-static def trim(String sourceString, String trimmedChar = '"') {
-    sourceString.replaceAll(~/^\$trimmedChar+|\$trimmedChar+$/, '')
-}
+mavenPublishing {
+    publishToMavenCentral(false)
+    signAllPublications()
 
-def loadSigningKeyFromFile() {
-    def signingKeyAbsolutePath = findProperty('signing.key.path') as String
-    def signingKeyFile = !(signingKeyAbsolutePath == null || signingKeyAbsolutePath.isBlank()) ? file(signingKeyAbsolutePath) : null 
-    logger.lifecycle("GPG signing key will be loaded from file '$signingKeyFile'")
+    coordinates(project.group.toString(), project.name, project.version.toString())
 
-    return (signingKeyFile?.exists() ?: false) ? signingKeyFile.text : ''
-}
+    pom {
+        name = project.ext.name
+        description = project.ext.description
+        url = 'https://github.com/kochetkov-ma/selenide-pages'
 
-task javadocJar(type: Jar) {
-    archiveClassifier.set 'javadoc'
-    from javadoc
-    javadoc.options.addStringOption('Xdoclint:none', '-quiet')
-}
-
-task sourcesJar(type: Jar) {
-    archiveClassifier.set 'sources'
-    from sourceSets.main.allSource
-}
-
-java {
-    withJavadocJar()
-    withSourcesJar()
-}
-
-publishing {
-    publications {
-        maven(MavenPublication) {
-            groupId = project.group
-            artifactId = project.name
-            from components.java
-            pom {
-                name = project.ext.name
-                description = project.ext.description
-                url = 'https://gitlab.com/brewcode/selenide-pages'
-
-                packaging 'jar'
-
-                licenses {
-                    license {
-                        name = 'The Apache License, Version 2.0'
-                        url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-                    }
-                }
-                developers {
-                    developer {
-                        id = 'brewcode'
-                        name = 'brewcode.org'
-                        email = 'dev@brewcode.org'
-                    }
-                    developer {
-                        id = 'kochetkov-ma'
-                        name = 'Maxim Kochetkov'
-                        email = 'kochetkov-ma@yandex.ru'
-                    }
-                }
-                scm {
-                    connection = 'https://gitlab.com/brewcode/selenide-pages.git'
-                    developerConnection = 'https://gitlab.com/brewcode/selenide-pages.git'
-                    url = 'https://gitlab.com/brewcode/selenide-pages'
-                }
+        licenses {
+            license {
+                name = 'The Apache License, Version 2.0'
+                url = 'https://www.apache.org/licenses/LICENSE-2.0.txt'
             }
         }
-    }
-    repositories {
-        maven {
-            name = 'ossrh'
-            credentials {
-                username project.findProperty('ossrhUsername') ?: ''
-                password project.findProperty('ossrhPassword') ?: ''
+        developers {
+            developer {
+                id = 'kochetkov-ma'
+                name = 'Maksim Kochetkov'
+                email = 'apmatypa88@gmail.com'
+                url = 'https://github.com/kochetkov-ma'
             }
-            url = version.endsWith('SNAPSHOT')
-                ? "https://s01.oss.sonatype.org/content/repositories/snapshots/"
-                : "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
+        }
+        scm {
+            url = 'https://github.com/kochetkov-ma/selenide-pages'
+            connection = 'scm:git:https://github.com/kochetkov-ma/selenide-pages.git'
+            developerConnection = 'scm:git:ssh://git@github.com/kochetkov-ma/selenide-pages.git'
         }
     }
 }
 
 signing {
-    String signingKeyText = trim(System.getenv('GPG_SIGNING_KEY') ?: loadSigningKeyFromFile())
-    String signingPassword = trim(findProperty('signing.password') as String ?: '')
-
-    logger.lifecycle("GPG signing key: ${signingKeyText.take(100)} ******")
-
-    useInMemoryPgpKeys(signingKeyText, signingPassword)
-    sign publishing.publications.maven
+    required = {
+        gradle.taskGraph.allTasks.any {
+            it.project == project && it instanceof org.gradle.api.publish.maven.tasks.PublishToMavenRepository
+        }
+    }
 }

@@ -3,7 +3,7 @@
 plugins {
     id 'idea'
     id "com.github.ben-manes.versions" version '0.44.0'
-    alias(libs.plugins.nexus)
+    id 'com.vanniktech.maven.publish' version '0.35.0' apply false
     alias(libs.plugins.kotlin) apply false
     alias(libs.plugins.allure.gradle) apply false
 }
@@ -65,16 +65,6 @@ subprojects {
         testImplementation libs.kotest.allure
         testImplementation libs.mockk
         testImplementation libs.kotest.runner
-        testImplementation libs.kotest.containers
         testImplementation(platform(libs.testcontainers))
     }
-}
-
-nexusStaging {
-    packageGroup = "org.brewcode"
-    numberOfRetries = 50
-    delayBetweenRetriesInMillis = 5000
-    serverUrl = "https://s01.oss.sonatype.org/service/local/"
-    username = project.findProperty('ossrhUsername') ?: ''
-    password = project.findProperty('ossrhPassword') ?: ''
 }

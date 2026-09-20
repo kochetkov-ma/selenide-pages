@@ -1,4 +1,4 @@
-[![Maven Central](https://img.shields.io/maven-central/v/org.brewcode/selenide-pages-core)](https://search.maven.org/#search|ga|1|selenide-pages-core)
+[![Maven Central](https://img.shields.io/maven-central/v/org.brewcode/selenide-pages-core)](https://central.sonatype.com/artifact/org.brewcode/selenide-pages-core)
 # Selenide pages
 
 ![selenide pages](pages.png)
@@ -7,19 +7,17 @@
 Framework based on [Selenide](https://github.com/selenide/selenide) provided convenient functional to create and manage
 your app [Page Objects](https://www.selenium.dev/documentation/guidelines/page_object_models/) in automation testing.
 
+> `maintenance/1.x` is the legacy compatibility line for version `1.4.0`. Modern development and dependency upgrades continue on [`main`](https://github.com/kochetkov-ma/selenide-pages/tree/main).
+
 ## Description
 
 - Quickly creating a convenient, extensible PageObject hierarchy based on Selenide.
 - Additional functionality for working with a page and organizing elements structure.
 - Kotlin DSL for Page Object, and fully compatible with Java 17
-- Cucumber steps for using Page Objects
 
 ## Modules
 ### [`selenide-pages-core`](selenide-pages-core/README.md)
 Main module
-
-### [`selenide-pages-cucumber`](selenide-pages-cucumber/README.md)
-Cucumber steps provided `selenide-pages-core` and `Selenide` functions in Gherkin `features` 
 
 ### [`selenide-pages-sample`](selenide-pages-sample/README.md)
 Example of use on `Kotlin` and `Java`
@@ -32,7 +30,7 @@ Example of use on `Kotlin` and `Java`
 Add `selenide-pages-core` dependency and your favorite testing framework for example `junit-jupiter` 
 ```groovy
 dependencies {
-    testImplementation "org.brewcode:selenide-pages-core:1.0.0"
+    testImplementation "org.brewcode:selenide-pages-core:1.4.0"
     testImplementation "org.junit.jupiter:junit-jupiter:5.8.2"
 }
 ```
@@ -48,7 +46,7 @@ The `selenide-pages-core` brings with transitive dependencies:
 The dependencies above are necessary for the operation of our library. But you can disable it and override 
 ```groovy
 dependencies {
-    testImplementation("org.brewcode:selenide-pages-core:1.0.0") { transitive false }
+    testImplementation("org.brewcode:selenide-pages-core:1.4.0") { transitive false }
 }
 ```
 
@@ -140,22 +138,21 @@ public class FunctionalTest {
 
 ## Support
 
-- Create an issue on [GitLab selenide-pages](https://gitlab.com/brewcode/selenide-pages)
-- Create an issue on [GitHub selenide-pages](https://github.com/kochetkov-ma/selenide-pages)
+- Open a [GitHub issue](https://github.com/kochetkov-ma/selenide-pages/issues) for support.
 
-**Kochetkov Maxim** - [kochetkov-ma@yandex.ru](mailto:kochetkov-ma@yandex.ru)
+**Maksim Kochetkov** - [apmatypa88@gmail.com](mailto:apmatypa88@gmail.com)
 
-## Roadmap
+## Publishing
 
-Cucumber steps module - expected release date `30.01.2022`
+See [publishing instructions](docs/publishing.md) for private validation and the `v1.4.0` compatibility release.
 
 ## Contributing
 
-Mail to me [kochetkov-ma@yandex.ru](mailto:kochetkov-ma@yandex.ru), and I will add you to GitLab Group
+Development takes place in the [GitHub repository](https://github.com/kochetkov-ma/selenide-pages). Open normal development pull requests against `main`; discuss a compatibility fix before targeting `maintenance/1.x`.
 
 ## Authors and acknowledgment
 
-**Kochetkov Maxim** - [kochetkov-ma@yandex.ru](mailto:kochetkov-ma@yandex.ru)
+**Maksim Kochetkov** - [apmatypa88@gmail.com](mailto:apmatypa88@gmail.com)
 **Frolov Sergey** - [tbd](mailto:tbd)
 
 ## License
@@ -166,4 +163,4 @@ Mail to me [kochetkov-ma@yandex.ru](mailto:kochetkov-ma@yandex.ru), and I will a
 
 Released on January 2021
 
-`ACTIVE DEVELOPING`
+`LEGACY MAINTENANCE`; active development continues on `main`.

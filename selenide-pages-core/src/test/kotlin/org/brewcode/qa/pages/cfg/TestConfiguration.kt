@@ -2,72 +2,30 @@ package org.brewcode.qa.pages.cfg
 
 import com.codeborne.selenide.Configuration
 import io.kotest.core.config.AbstractProjectConfig
-import io.kotest.extensions.testcontainers.perProject
-import io.kotest.mpp.env
 import org.brewcode.qa.pages.page.Pages
-import org.openqa.selenium.chrome.ChromeOptions
-import org.openqa.selenium.chromium.ChromiumOptions
-import org.openqa.selenium.remote.Browser
-import org.openqa.selenium.remote.CapabilityType
-import org.testcontainers.containers.BrowserWebDriverContainer
 import org.testcontainers.containers.GenericContainer
-import org.testcontainers.containers.Network
 import org.testcontainers.utility.DockerImageName
 
 @Suppress("HttpUrlsUsage")
 object TestConfiguration : AbstractProjectConfig() {
 
-    override val parallelism: Int = 4
-
-    private var testNetwork: Network = Network.newNetwork()
-
-    private var alias = "getting-started"
-
-    private val container: GenericContainer<Nothing> = GenericContainer<Nothing>(DockerImageName.parse("docker/getting-started")).apply {
+    private val container = GenericContainer<Nothing>(
+        DockerImageName.parse("docker/getting-started@sha256:d79336f4812b6547a53e735480dde67f8f8f7071b414fbd9297609ffb989abc1")
+    ).apply {
         withExposedPorts(80)
-        withNetwork(testNetwork)
-        withNetworkAliases(alias)
     }
-
-    private val browser: BrowserWebDriverContainer<Nothing> =
-        BrowserWebDriverContainer<Nothing>(DockerImageName.parse("selenium/standalone-chrome:4.1.0"))
-            .apply {
-                withCapabilities(
-                    ChromiumOptions<ChromeOptions>(CapabilityType.BROWSER_NAME, Browser.CHROME.browserName(), ChromeOptions.CAPABILITY).apply {
-                        addEnv("JAVA_OPTS", "-Dwebdriver.chrome.whitelistedIps=")
-                        addEnv("SE_NODE_SESSION_TIMEOUT", "120")
-                        addEnv("SE_NODE_MAX_SESSIONS", "10")
-                        addEnv("SE_NODE_OVERRIDE_MAX_SESSIONS", "true")
-                        addArguments("--disable-gpu")
-                        addArguments("--no-sandbox")
-                        addArguments("--disable-dev-shm-usage")
-                    }
-                )
-                withNetwork(testNetwork)
-                withExposedPorts(4444, 7900)
-            }
 
     lateinit var pages: Pages
 
-    override fun listeners() = buildList {
-        add(container.perProject())
-        if (isCI) add(browser.perProject())
-    }
-
-    override fun beforeAll() {
-        Configuration.baseUrl = "http://" + when {
-            container.isCreated and isNotCI -> container.host + ":" + container.firstMappedPort
-            container.isCreated and isCI -> alias
-            else -> "localhost"
-        }
-
-        if (isCI) Configuration.remote = "http://" + browser.host + ":" + browser.firstMappedPort
-
-        println("GRID URL: " + Configuration.remote)
-
+    override suspend fun beforeProject() {
+        container.start()
+        Configuration.browser = "chrome"
+        Configuration.headless = true
+        Configuration.baseUrl = "http://${container.host}:${container.firstMappedPort}"
         pages = Pages.createWithStaticSelenideDriver()
     }
 
-    private val isCI = env("CI") != null
-    private val isNotCI = !isCI
+    override suspend fun afterProject() {
+        container.stop()
+    }
 }

@@ -31,9 +31,7 @@ hs_err_pid*
 .gradle/
 build/
 keys/
-gradlew
-gradlew.bat
-gradle-wrapper.jar
+!gradle/wrapper/gradle-wrapper.jar
 
 # Allure
 .allure/
@@ -41,3 +39,11 @@ allure-results/
 
 # Private
 .gpg/
+.secrets/
+
+# Local agent state
+AGENTS.md
+CLAUDE.md
+.agents/
+.claude/
+.codex/

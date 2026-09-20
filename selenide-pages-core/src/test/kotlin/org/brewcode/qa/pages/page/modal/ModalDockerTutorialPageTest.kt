@@ -1,9 +1,7 @@
 package org.brewcode.qa.pages.page.modal
 
 import com.codeborne.selenide.Condition
-import io.kotest.assertions.retry
 import io.kotest.core.spec.style.FreeSpec
-import junit.framework.AssertionFailedError
 import org.brewcode.qa.pages.cfg.TestConfiguration
 import kotlin.time.Duration.Companion.seconds
 

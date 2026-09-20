@@ -1,33 +1,38 @@
 package org.brewcode.qa.pages.sample.java.test;
 
 import org.brewcode.qa.pages.page.Pages;
+import org.brewcode.qa.pages.sample.java.TestingUtil;
 import org.brewcode.qa.pages.sample.java.page.DockerGettingStartedMainPage;
 import org.brewcode.qa.pages.sample.java.page.DockerGettingStartedMainPage.GettingStartedNavigation;
-import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
-import static com.codeborne.selenide.CollectionCondition.sizeGreaterThan;
+import static com.codeborne.selenide.CollectionCondition.size;
 import static com.codeborne.selenide.Condition.appear;
-import static com.codeborne.selenide.Condition.empty;
+import static com.codeborne.selenide.Condition.text;
+import static com.codeborne.selenide.Selenide.closeWebDriver;
 
 public class FunctionalTest {
 
     @Test
-    @Disabled("Work In Progress")
-    public void test() {
+    public void opensTutorialAndFindsNavigation() {
         final Pages pages = Pages.PagesFactory
-            .createWithStaticSelenideDriver("http://localhost"); // Create Page Factory
+            .createWithStaticSelenideDriver(TestingUtil.baseUrl());
         final DockerGettingStartedMainPage page = pages
-            .page(DockerGettingStartedMainPage.class) // Create page
-            .open() // open page with path from @Page annotation
-            .verify(); // verify that page opened successfully, url is correct, title is expected, all required elements is displayed
-        
-        // interact with element collection and check third element text is not empty
-        page.paragraphs.get(2).shouldNotBe(empty);
+            .page(DockerGettingStartedMainPage.class)
+            .open()
+            .verify();
 
-        // get block
+        // GIVEN the tutorial page, WHEN its contents load, THEN required navigation is visible.
+        page.paragraphs.shouldHave(size(4).because("Pinned tutorial has four section headings"));
+        page.paragraphs.get(2).shouldHave(text("What is a container?").because("Third section explains containers"));
         final GettingStartedNavigation block = page.gettingStartedNavigation;
-        block.navigationItemList.getSelf().shouldHave(sizeGreaterThan(0)); // check that list is loaded
-        block.navigationItemList.get(1).gettingStartedNavigation.should(appear); // get element and check
+        block.navigationItemList.getSelf().shouldHave(size(10).because("Pinned tutorial has ten navigation items"));
+        block.navigationItemList.get(1).gettingStartedNavigation.should(appear.because("Second navigation item is visible"));
+    }
+
+    @AfterEach
+    public void closeBrowser() {
+        closeWebDriver();
     }
 }
